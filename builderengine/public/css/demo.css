@@ -1,0 +1,274 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+@font-face {
+	font-weight: normal;
+	font-style: normal;
+	font-family: 'codropsicons';
+	src:url('../fonts/codropsicons/codropsicons.eot');
+	src:url('../fonts/codropsicons/codropsicons.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/codropsicons/codropsicons.woff') format('woff'),
+		url('../fonts/codropsicons/codropsicons.ttf') format('truetype'),
+		url('../fonts/codropsicons/codropsicons.svg#codropsicons') format('svg');
+}
+
+body {
+
+	font-weight: 300;
+	font-family: 'Lato', Calibri, Arial, sans-serif;
+}
+
+#mp-menu a {
+	text-decoration: none;
+	color: #f7f7f7;
+	outline: none;
+}
+
+#mp-menu a:hover, #mp-menu a:focus {
+	color: #fff;
+	outline: none;
+}
+
+/* Clearfix hack by Nicolas Gallagher: http://nicolasgallagher.com/micro-clearfix-hack/ */
+.clearfix:before,
+.clearfix:after {
+	display: table;
+	content: " ";
+}
+
+.clearfix:after {
+	clear: both;
+}
+
+.codrops-header,
+.codrops-top {
+	font-family: 'Lato', Arial, sans-serif;
+}
+
+.codrops-header {
+	margin: 0 auto;
+	padding: 2em;
+	background: rgba(0,0,0,0.01);
+	text-align: center;
+}
+
+.codrops-header h1 {
+	margin: 0;
+	font-weight: 300;
+	font-size: 2.625em;
+	line-height: 1.3;
+}
+
+.codrops-header span {
+	display: block;
+	padding: 0 0 0.6em 0.1em;
+	font-size: 60%;
+	opacity: 0.7;
+}
+
+/* To Navigation Style */
+.codrops-top {
+	width: 100%;
+	background: #91cfa1;
+	background: rgba(6, 255, 221, 0.1);
+	text-transform: uppercase;
+	font-size: 1.19em;
+	line-height: 2.2;
+}
+
+.codrops-top a {
+	display: inline-block;
+	padding: 0 1em;
+	color: #fff;
+	text-decoration: none;
+	letter-spacing: 0.1em;
+}
+
+.codrops-top a:hover {
+}
+
+.codrops-top span.right {
+	float: right;
+}
+
+.codrops-top span.right a {
+	display: block;
+	float: left;
+}
+
+.codrops-icon:before {
+	margin: 0 4px;
+	text-transform: none;
+	font-weight: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-family: 'codropsicons';
+	line-height: 1;
+	speak: none;
+	-webkit-font-smoothing: antialiased;
+}
+
+.codrops-icon-drop:before {
+	content: "\e001";
+}
+
+.codrops-icon-prev:before {
+	content: "\e004";
+}
+
+/* Demo Buttons Style */
+.codrops-demos {
+	padding-top: 1em;
+	font-size: 1.1em;
+}
+
+.codrops-demos a {
+	display: block;
+	float: left;
+	clear: both;
+	margin: 0.5em 0.5em 0.5em 1.9em;
+	padding: 1em 1.1em;
+	width: 280px;
+	outline: none;
+	color: #fff;
+	background: #336ca6;
+	text-align: center;
+	text-decoration: none;
+	font-weight: 700;
+}
+
+.codrops-demos a:hover,
+.codrops-demos a.current-demo,
+.codrops-demos a.current-demo:hover {
+	opacity: 0.6;
+}
+
+.content {
+	padding: 4em 2em;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.block {
+	float: left;
+	padding: 1em 3em;
+}
+
+.block-40 {
+	width: 40%;
+}
+
+.block-60 {
+	width: 60%;
+}
+
+.block p {
+	margin: 0;
+	padding: 0 1em 0.6em;
+	font-size: 1.8em;
+	line-height: 1.5;
+}
+
+.info {
+	text-align: center;
+	font-size: 1.5em;
+	margin-top: 3em;
+	clear: both;
+	padding-top: 3em;
+	color: rgba(255,255,255,0.5);
+}
+
+.info a {
+	font-weight: 700;
+	font-size: 0.9em;
+}
+
+.info a:hover {
+	color: #336ca6;
+}
+
+@media screen and (max-width: 69em) {
+	.block {
+		float: none;
+		width: 100% !important;
+		padding: 1em;
+	}
+}
+
+@media screen and (max-width: 25em) {
+
+	body {
+		font-size: 80%;
+	}
+
+	.codrops-icon span {
+		display: none;
+	}
+
+}
+/* To Navigation Style */
+			.codrops-top {
+			 width: 100%;
+
+			  -webkit-box-shadow: inset 0px 1px 0px 0px rgba(0, 0, 0, 1), 0px 1px 0px 0px rgba(0, 0, 0, 0.8);
+			  box-shadow: inset 0px 1px 0px 0px rgba(0, 0, 0, 1), 0px 1px 0px 0px rgba(0, 0, 0, 0.8);
+			  height: 42px;
+			  background: #4e525d;
+			  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzRlNTI1ZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzNjM4NDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+
+			  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4e525d', endColorstr='#363840',GradientType=0 );
+
+
+				background: -moz-linear-gradient(top,  #4e525d 0%, #363840 100%); 
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4e525d), color-stop(100%,#363840)); 
+				background: -webkit-linear-gradient(top,  #4e525d 0%,#363840 100%);
+				background: -o-linear-gradient(top,  #4e525d 0%,#363840 100%); 
+				background: -ms-linear-gradient(top,  #4e525d 0%,#363840 100%); 
+				background: linear-gradient(to bottom,  #4e525d 0%,#363840 100%); 
+
+			 text-transform: uppercase;
+			 font-size: 1.19em;
+			 line-height: 2.2;
+			}
+			.fa-icon:before {
+			    font-family: FontAwesome;
+			    font-style: normal;
+			    font-weight: normal;
+			    text-decoration: inherit;
+			/*--adjust as necessary--*/
+			    color: #fff;
+			    font-size: 28px;
+			    padding-right: 0.5em;
+			    position: absolute;
+			    top: 8px;
+
+			    left: 10px;
+
+			}
+			.fa-icon
+			{
+				-webkit-font-smoothing: antialiased;
+    			-moz-osx-font-smoothing: grayscale;
+			}
+			.codrops-top .fa-icon
+			{
+				margin-top: 1px;
+				position: relative;
+				padding-left: 45px;
+			}
+
+			.codrops-top a:before {
+
+
+			}
+			.codrops-top a:hover
+			{
+
+				background: #606c88; /* Old browsers */
+				background: -moz-linear-gradient(top,  #606c88 0%, #3f4c6b 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#606c88), color-stop(100%,#3f4c6b)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top,  #606c88 0%,#3f4c6b 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top,  #606c88 0%,#3f4c6b 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top,  #606c88 0%,#3f4c6b 100%); /* IE10+ */
+				background: linear-gradient(to bottom,  #606c88 0%,#3f4c6b 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', endColorstr='#3f4c6b',GradientType=0 ); /* IE6-9 */
+
+			}

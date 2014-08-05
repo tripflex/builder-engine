@@ -1,0 +1,1 @@
+change dir for connector.php

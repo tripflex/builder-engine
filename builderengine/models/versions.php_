@@ -1,0 +1,347 @@
+<?php
+/***********************************************************
+* BuilderEngine v2.0.12
+* ---------------------------------
+* BuilderEngine CMS Platform - Radian Enterprise Systems Limited
+* Copyright Radian Enterprise Systems Limited 2012-2014. All Rights Reserved.
+*
+* http://www.builderengine.com
+* Email: info@builderengine.com
+* Time: 2014-23-04 | File version: 2.0.12
+*
+***********************************************************/
+
+    /**
+     * @file
+     * Keeps track and provides control of website page versions.
+     */
+
+    class Versions extends CI_Model
+    {
+        private $active_version = array();
+        private $pending_version = array();
+
+        private $page_block = array();
+        private $area_indexed_blocks = array();
+        public function Versions()
+        {
+
+        }
+        public function get_current_page_version()
+        {
+            global $active_controller;
+
+            $user = $active_controller->user;
+            
+            if(($user->is_member_of("Administrators") || $user->is_member_of("Frontend Editor") || $user->is_member_of("Frontend Manager")) && $this->get_pending_page_version_id($active_controller->get_page_path()) !== false )
+                return $this->get_pending_page_version_id($active_controller->get_page_path()); 
+            else
+                return $this->get_active_page_version_id($active_controller->get_page_path());  
+
+        }
+        public function set_version_pending($id)
+        {
+            $id = mysql_real_escape_string($id);
+            
+            $update = array("status" => 'pending', "approver" => -1);
+
+            $this->db->where("id", $id);
+            $this->db->update("page_versions", $update);
+        }
+        public function get_current_layout_version()
+        {
+            global $active_controller;
+
+            $user = $active_controller->user;
+
+            if(($user->is_member_of("Administrators") || $user->is_member_of("Frontend Editor") || $user->is_member_of("Frontend Manager")) && $this->get_pending_page_version_id("layout") !== false)
+            {
+                return $this->get_pending_page_version_id("layout"); 
+            }else{
+                return $this->get_active_page_version_id("layout");
+                }   
+            
+
+        }
+        private function load_page_blocks()
+        {
+            
+            
+            $page_version = $this->get_current_page_version();
+            $layout_version = $this->get_current_layout_version();
+            PC::load_page_blocks("Loading page version: $page_version layout version: $layout_version");
+            $this->db->where("(`version` = '$page_version'");
+            //$this->db->or_where("`version` = '0'");
+            $this->db->or_where("`version` = '$layout_version')");
+
+            $this->db->order_by("ID ASC");
+            //$select = $this->db->_compile_select();
+            //echo $select;
+            $query = $this->db->get("blocks");
+            $result = $query->result();
+
+            foreach($result as $key => $block)
+            {
+                if($block->version == 0)
+                    if($block->global == "true"){
+                        $this->bind_block_to_page_version($block->id, $layout_version);
+                        $result[$key]->version = $layout_version;
+                    }else{
+                        $this->bind_block_to_page_version($block->id, $page_version);
+                        $result[$key]->version = $page_version;
+                    }
+
+                $this->page_block[$block->id] = $result[$key];
+                $this->page_block[$block->name] = &$this->page_block[$block->id];
+
+                if($block->area != 0){
+                    $this->area_indexed_blocks[$block->area][$block->id] = &$this->page_block[$block->id];
+
+                }
+            }
+
+        }
+
+        function bind_block_to_page_version($block_id, $version_id)
+        {
+            $block_id = mysql_real_escape_string($block_id);
+            $version_id = mysql_real_escape_string($version_id);
+            
+            $this->db->query("UPDATE `be_blocks` SET `version` = '$version_id' WHERE (`id` = '$block_id' OR `name` = '$block_id') AND `version` = '0'");
+        }
+        public function get_area_blocks($area)
+        {
+            if(array_key_exists($area, $this->area_indexed_blocks))
+                return $this->area_indexed_blocks[$area];
+            else
+                return array();
+        }
+        public function load_block($id)
+        {
+            if(empty($this->page_block))
+                $this->load_page_blocks();
+
+            if(array_key_exists($id, $this->page_block))
+                return $this->page_block[$id];
+            else
+                return FALSE;
+        }
+        public function activate_version($version_id)
+        {
+            $page_path = $this->get_version_path_by_id($version_id);
+            $active_version = $this->get_active_page_version_id($page_path);
+
+            $this->deactivate_version($active_version);
+
+            $data = array(
+                "active" => 'true');
+
+            $this->db->where('id', $version_id);
+            $this->db->update('page_versions', $data);
+
+            $this->db->where('version', $version_id);
+            $this->db->update('blocks', $data);
+        }
+        public function deactivate_version($version_id)
+        {
+            $data = array(
+                "active" => 'false');
+
+            $this->db->where('id', $version_id);
+            $this->db->update('page_versions', $data);
+
+            $this->db->where('version', $version_id);
+            $this->db->update('blocks', $data);
+
+
+        }
+        public function approve_version($version_id)
+        {
+            global $active_controller;
+            $data = array(
+                "approver"  => $active_controller->user->get_id(),
+                "status"    => 'submitted',
+
+                );
+
+            $this->db->where('id', $version_id);
+            $this->db->update('page_versions', $data); 
+        }
+        public function delete($version_id)
+        {
+            $this->db->where('id', $version_id);
+            $this->db->delete('page_versions'); 
+        }
+
+        public function disapprove_version($version_id)
+        {
+            global $active_controller;
+            $data = array(
+                "approver"  => -1
+                );
+
+            $this->db->where('id', $version_id);
+            $this->db->update('page_versions', $data); 
+        }
+        public function is_version_approved($version_id)
+        {
+            $this->db->where('id', $version_id);
+            $query = $this->db->get("page_versions");
+            $result = $query->result();
+
+            return $result[0]->approver != -1;
+        }
+        public function create_version($page_path)
+        {
+
+            global $active_controller;
+
+            $latest_name = $this->get_last_page_version_name($page_path);
+
+
+            $number = (int)preg_replace('/[^\-\d]*(\-?\d*).*/','$1',$latest_name);
+            if($number > 0)
+            {
+                $old_number = $number;
+                $number++;
+                $new_name = str_replace($old_number, $number,$latest_name); 
+            }
+            else
+            {
+                $new_name = str_replace($number, "",$latest_name);
+                $new_name = trim($new_name, " ");
+                $new_name .= " (1)";
+            }
+            $data = array(
+                'path'          =>  $page_path,
+                'author'        =>  $active_controller->user->get_id(),
+                'name'          =>  $new_name,
+                'status'        =>  'pending',
+                'active'        =>  'false',
+                'time_created'  =>  time()
+            );
+            $this->db->insert('page_versions', $data);
+            return $this->db->insert_id();    
+        }
+        public function get_page_versions($page_path)
+        {
+            $this->load->helper("object_transorm_helper");
+
+            $this->db->where("path", $page_path);
+            $this->db->order_by("time_created", "DESC"); 
+            $query = $this->db->get("page_versions");
+            return arrays_to_objects($query->result());
+        }
+        private function get_last_version($page_path)
+        {
+            $this->db->where("path", $page_path);
+            $this->db->order_by("time_created", "DESC");
+            $this->db->order_by("id", "DESC");
+            $this->db->limit(1);
+            
+            $query = $this->db->get("page_versions");
+            $result = $query->result();
+
+            return $result;
+        }
+        public function get_last_page_version_name($page_path)
+        {
+            $result = $this->get_last_version($page_path);
+            
+            if($result){
+                return $result[0]->name;    
+            }else{
+                return false;   
+            }  
+        }
+
+        public function get_last_page_version_id($page_path)
+        {
+            $result = $this->get_last_version($page_path);
+            
+            if($result){
+                return $result[0]->id;    
+            }else{
+                return false;   
+            }  
+        }
+
+
+        public function get_active_page_version_id($page_path)
+        {
+            if(array_key_exists($page_path, $this->active_version))
+                return $this->active_version[$page_path];
+
+            $this->db->where("path", $page_path);
+            $this->db->where("active", "true");
+            $query = $this->db->get("page_versions");
+            $result = $query->result();
+            
+            if($result){
+                $this->active_version[$page_path] = $result[0]->id;
+                return $result[0]->id;    
+            }else{
+                $new_version = $this->create_initial_page_version($page_path);
+                $this->active_version[$page_path] = $new_version;
+                return $new_version;   
+            }    
+        }
+
+        public function get_pending_page_version_id($page_path)
+        {
+            if(array_key_exists($page_path, $this->pending_version))
+                return $this->pending_version[$page_path];
+
+            $this->db->where("path", $page_path);
+            $this->db->where("status", "pending");
+            $query = $this->db->get("page_versions");
+            $result = $query->result();
+            
+            if($result){
+                $this->pending_version[$page_path] = $result[0]->id;
+                return $result[0]->id;    
+            }else{
+                return false;
+            }    
+        }
+        public function create_initial_page_version($page_path)
+        {
+            $data = array(
+                'path'          =>  $page_path,
+                'author'        =>  0,
+                'approver'      =>  0,
+                'name'          =>  'Initial Version',
+                'status'        =>  'submitted',
+                'active'        =>  'true',
+                'time_created'  => time()
+            );
+            $this->db->insert('page_versions', $data);
+            return $this->db->insert_id();
+        }
+        public function get_version_path_by_id($id)
+        {
+            $this->db->select("path");
+            $this->db->from("page_versions");
+            $this->db->where('id', $id);
+            $query = $this->db->get();
+            $result = $query->result();
+            
+            if($result)
+                return $result[0]->path;
+            else
+                return false;
+            
+        }
+
+        public function rename($version_id, $new_name)
+        {
+            $data = array(
+                "name"  => $new_name,
+                );
+
+            $this->db->where('id', $version_id);
+            $this->db->update('page_versions', $data); 
+        }
+              
+    }
+?>
