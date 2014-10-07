@@ -64,7 +64,7 @@ $config['index_page'] = '';
 | 'ORIG_PATH_INFO'    Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']    = 'AUTO';
+$config['uri_protocol']    = 'REQUEST_URI';
 
 /*
 |--------------------------------------------------------------------------
@@ -361,7 +361,7 @@ $config['time_reference'] = 'local';
 | in your view files.  Options are TRUE or FALSE (boolean)
 |
 */
-$config['rewrite_short_tags'] = FALSE;
+$config['rewrite_short_tags'] = TRUE;
 
 
 /*

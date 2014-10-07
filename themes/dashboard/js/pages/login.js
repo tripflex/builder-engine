@@ -29,7 +29,7 @@ $(document).ready(function() {
 	//if user change email or username change avatar
 	userField.change(function() {
         
-        $.get("http://" + document.domain + '/index.php/admin/ajax/is_valid_avatar/' + encodeURIComponent($("#user").val()), function (data) {
+        $.get('/index.php/admin/ajax/is_valid_avatar/' + encodeURIComponent($("#user").val()), function (data) {
             if(data == "true")
                 avatar.attr('src', '/files/avatars/' +  encodeURIComponent($("#user").val()) +'.jpg')
             else
@@ -42,7 +42,7 @@ $(document).ready(function() {
 
 	//------------- Validation -------------//
     $.validator.addMethod('authenticate', function (value) { 
-    $.post("http://" + document.domain + '/index.php/admin/ajax/verify_login/',
+    $.post('/index.php/admin/ajax/verify_login/',
     {
     	user: encodeURIComponent($("#user").val()),
     	pass: encodeURIComponent($("#password").val())
@@ -80,7 +80,7 @@ $(document).ready(function() {
 	        btn.attr('disabled', 'disabled');
 	        
 	        setTimeout(function() {
-	            $.post("http://" + document.domain + '/index.php/admin/ajax/verify_login/',
+	            $.post('/index.php/admin/ajax/verify_login/',
 			    {
 			    	user: encodeURIComponent($("#user").val()),
 			    	pass: encodeURIComponent($("#password").val())

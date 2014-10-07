@@ -30,7 +30,7 @@ function finishing()
 {
     $("#status-message").html("Finishing Installation...");
 
-    $.get("http://" + document.domain + '/index.php/admin/install/finish', function (data) {
+    $.get('/index.php/admin/install/finish', function (data) {
 
         if(data == "success"){
             progress(100);
@@ -48,7 +48,7 @@ function create_admin()
     $("#status-message").html("Creating Administrator Account...");
 
 
-    $.post("http://" + document.domain + '/index.php/admin/install/create_admin',
+    $.post('/index.php/admin/install/create_admin',
     {
          admin_username:    encodeURIComponent($("#admin_username").val()),
          admin_password:    encodeURIComponent($("#admin_password").val()),
@@ -71,7 +71,7 @@ function configure_website()
     $("#status-message").html("Configuring Website...");
     progress(60);
 
-    $.post("http://" + document.domain + '/index.php/admin/install/configure/',
+    $.post('/index.php/admin/install/configure/',
     {
         sitename: encodeURIComponent($("#sitename").val()),
         host: encodeURIComponent($("#db_host").val()),
@@ -89,7 +89,7 @@ function install_db()
 {
     $("#status-message").html("Installing Database...");
 
-    $.post("http://" + document.domain + '/index.php/admin/install/install_db/',
+    $.post('/index.php/admin/install/install_db/',
     {
         host: encodeURIComponent($("#db_host").val()),
         user: encodeURIComponent($("#db_user").val()),
