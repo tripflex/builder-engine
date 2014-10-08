@@ -15,7 +15,7 @@
  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-$config['site_installed'] = false;
+$config['site_installed'] = true;
 
 $config['modules_locations'] = array(
     'modules/' => '../../modules/',
