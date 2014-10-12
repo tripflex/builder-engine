@@ -110,7 +110,7 @@
     width: 100%;
     /*background: url(http://jackrugile.com/images/misc/skyline-texture.png);*/ }
 </style>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/builderengine/public/js/googleapis/jquery/1.10.2/jquery.min.js"></script>
 <script src="themes/pro/js/bootstrap.js"></script>
 <script src="themes/pro/js/sketch.min.js"></script>
 
