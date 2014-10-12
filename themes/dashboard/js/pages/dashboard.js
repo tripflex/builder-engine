@@ -288,11 +288,11 @@ $(document).ready(function() {
 	    showMinMax: false
 	 });
 
-	//setInterval(function() {
-	//	refresh_server_load();
-	//	refresh_site_visitors();
+	setInterval(function() {
+		refresh_server_load();
+		refresh_site_visitors();
 
-    //}, 2500);
+    }, 2500);
 
 });
 

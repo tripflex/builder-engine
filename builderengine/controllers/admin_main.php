@@ -70,7 +70,7 @@ class Admin_main extends BE_Controller {
         if($location == null){
             $remote_addr = $_SERVER['REMOTE_ADDR'];
             if($remote_addr == '127.0.0.1'){
-                $remote_addr = '115.28.162.2';
+                $remote_addr = '8.8.8.8';
             }
             $location = $this->getLocation($remote_addr);
             $this->cache->insert($location_cache_id, $location, 2678400);

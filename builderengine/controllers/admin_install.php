@@ -121,7 +121,7 @@
         {
 
             $requirements = array();
-            if(array_key_exists('HTTP_MOD_REWRITE', $_SERVER))
+            if(array_key_exists('HTTP_MOD_REWRITE', $_SERVER) && $_SERVER['HTTP_MOD_REWRITE'] == "On")
                 $requirements['mod_rewrite'] = true;
             else
                 $requirements['mod_rewrite'] = false;
