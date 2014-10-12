@@ -85,7 +85,7 @@ $(document).ready(function () {
         <title>BuilderEngine File Manager</title>
 
         <!-- jQuery and jQuery UI (REQUIRED) -->
-        <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/builderengine/public/css/googleapis/jqueryui/1.8.18/themes/smoothness/jquery-ui.css">
         <script type="text/javascript" src="/builderengine/public/js/googleapis/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 

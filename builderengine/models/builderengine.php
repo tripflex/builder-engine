@@ -89,7 +89,7 @@ $BuilderEngine = null;
         }
         function integrate_builderengine_styles()
         {?>
-            <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+            <link href="/builderengine/public/css/googleapis/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
             <link href="http://vitalets.github.io/angular-xeditable/dist/css/xeditable.css" rel="stylesheet" />
             <link rel='stylesheet' id='font-awesome-4-css'  href='/builderengine/public/css/font-awesome.css?ver=4.0.3' type='text/css' media='all' />
 
