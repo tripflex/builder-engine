@@ -23,16 +23,16 @@
     <meta name="application-name" content="BuilderEngine admin template" />
 
     <!-- Headings -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700' rel='stylesheet' type='text/css'>
+    <link href='/builderengine/public/css/googleapis/css_Open_Sans_400_800_700.css' rel='stylesheet' type='text/css'>
     <!-- Text -->
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css' />
+    <link href='/builderengine/public/css/googleapis/css_Droid_Sans_400_700.css' rel='stylesheet' type='text/css' />
 
     <!--[if lt IE 9]>
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet" type="text/css" />
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:700" rel="stylesheet" type="text/css" />
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:800" rel="stylesheet" type="text/css" />
-    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400" rel="stylesheet" type="text/css" />
-    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:700" rel="stylesheet" type="text/css" />
+    <link href="/builderengine/public/css/googleapis/css_Open_Sans_400.css" rel="stylesheet" type="text/css" />
+    <link href="/builderengine/public/css/googleapis/css_Open_Sans_700.css" rel="stylesheet" type="text/css" />
+    <link href="/builderengine/public/css/googleapis/css_Open_Sans_800.css" rel="stylesheet" type="text/css" />
+    <link href="/builderengine/public/css/googleapis/css_Droid_Sans_400.css" rel="stylesheet" type="text/css" />
+    <link href="/builderengine/public/css/googleapis/css_Droid_Sans_700.css" rel="stylesheet" type="text/css" />
     <![endif]-->
 
     <!-- Core stylesheets do not remove -->
