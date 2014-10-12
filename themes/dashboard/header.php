@@ -69,7 +69,7 @@
     <!-- Important plugins put in all pages -->
     <script src="/builderengine/public/js/googleapis/jquery/1.9.1/jquery.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+    <script src="/builderengine/public/js/googleapis/jqueryui/1.10.2/jquery-ui.min.js"></script>
     <script src="<?php echo get_theme_path()?>/js/conditionizr.min.js"></script>
     <script src="<?php echo get_theme_path()?>/js/bootstrap/bootstrap.js"></script>
     <script src="<?php echo get_theme_path()?>/js/plugins/core/nicescroll/jquery.nicescroll.min.js"></script>
