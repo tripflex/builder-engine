@@ -163,7 +163,7 @@ $BuilderEngine = null;
             
             <script src="/builderengine/public/js/editor/ckeditor.js"></script>
 
-            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+            <script src="/builderengine/public/js/googleapis/angularjs/1.0.8/angular.min.js"></script>
             <script src="http://vitalets.github.io/angular-xeditable/dist/js/xeditable.js"></script>
 
             
@@ -256,7 +256,6 @@ $BuilderEngine = null;
                    
                     <? endif; ?>
                     //$("html").attr('ng-app','');
-                    //$.getScript("http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js");
                 });
             </script>
             

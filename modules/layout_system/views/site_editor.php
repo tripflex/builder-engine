@@ -355,7 +355,7 @@ $(window).ready(function (){
 });
 </script>
 
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script src="/builderengine/public/js/googleapis/angularjs/1.0.8/angular.min.js"></script>
 <script type="text/javascript">
 var editor_mode = "";
 function initialize_publish_button()
