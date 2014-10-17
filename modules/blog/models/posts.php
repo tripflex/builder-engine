@@ -17,28 +17,17 @@
         {
             if($search != ""){
                 $query = $this->db->query("
-                    SELECT tmp.*, MATCH (tmp.`title`) AGAINST ('*$search*' IN BOOLEAN MODE) as score_title 
-                    FROM ( 
-                        SELECT be_posts.*, count(be_post_comments.name) as comment_num, be_blocks.data from `be_posts` 
-                        LEFT JOIN `be_blocks`  on `be_posts`.`block` = be_blocks.id 
-                        LEFT JOIN `be_post_comments`  on `be_posts`.`id` = be_post_comments.post_id 
-                        WHERE be_blocks.active='yes'
-                        ) tmp 
-                WHERE MATCH (tmp.`title`) AGAINST ('*$search*' IN BOOLEAN MODE) 
-                OR tmp.`data` like '%$search%' ORDER BY (score_title*2) DESC");
+                    SELECT be_posts.*, count(be_post_comments.name) as comment_num, MATCH (`title`) AGAINST ('*$search*') as score_title, MATCH (`title`) AGAINST ('*$search*') as score_text,
+                    FROM be_posts LEFT JOIN `be_post_comments`  on `be_posts`.`id` = be_post_comments.post_id 
+                    WHERE MATCH (`text`) AGAINST ('*$search*') 
+                    OR MATCH (`text`) AGAINST ('*$search*' IN BOOLEAN MODE) GROUP BY be_posts.id ORDER BY ((score_title*2) + score_text) DESC ");
                 
             }else{
-               $query = $this->db->query("
-                    SELECT tmp.* 
-                    FROM ( 
-                        SELECT be_posts.*, count(be_post_comments.name) as comment_num, be_blocks.data from `be_posts` 
-                        LEFT JOIN `be_blocks`  on `be_posts`.`block` = be_blocks.id 
-                        LEFT JOIN `be_post_comments`  on `be_posts`.`id` = be_post_comments.post_id 
-                        WHERE be_blocks.active='yes'
-                        ) tmp 
-                 ");
+               $query = $this->db->query("SELECT be_posts.*, count(be_post_comments.name) as comment_num FROM be_posts LEFT JOIN `be_post_comments`  on `be_posts`.`id` = be_post_comments.post_id GROUP BY be_posts.id");
                 
             }
+
+            
             return $query->result();
         }// DO NOT TOUCH CODE BELOW END
         function get($id = -1)
@@ -99,6 +88,7 @@
                 "title" => $post['title'],
                 "date_created" => time(),
                 "author" => $author,
+                "text" => $post['text'],
                 "image" => $image
             );
 
@@ -106,15 +96,26 @@
             return $this->db->insert_id();
 
         }
-
+        function modify($id, $data)
+        {
+            $this->db->where('id', $id);
+            $this->db->update('posts', $data);
+        }
         function edit($id, $contents)
         {
             $image = $this->upload_image();
 
             $data = array( 
                 "title" => $contents['title'],
+                "text" => $contents['text'],
                 "image"    => $image,
             );
+            if($data['text'] == "")
+                unset($data['text']);
+
+            if($data['image'] == "")
+                unset($data['image']);
+
             $this->db->where('id', $id);
             $this->db->update('posts', $data);        
         }

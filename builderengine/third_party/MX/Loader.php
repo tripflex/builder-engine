@@ -1,5 +1,5 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
-
+require_once( APPPATH . '/third_party/smarty/libs/Smarty.class.php' );
 /**
  * Modular Extensions - HMVC
  *
@@ -261,6 +261,90 @@ class MX_Loader extends CI_Loader
 	/** Load an array of plugins **/
 	public function plugins($plugins) {
 		foreach ($plugins as $_plugin) $this->plugin($_plugin);
+	}
+
+	public function smart_view($view, $vars = array())
+	{
+		if(!strpos($view,".php") && !strpos($view,".tpl"))
+			$view .= ".php";
+		$view_name = $view;
+		$smarty = new Smarty();
+
+        $config =& get_config();
+
+        $this->caching = 1;
+        
+        $smarty->setCompileDir( APPPATH . '/third_party/Smarty-3.1.8/templates_c' );
+        $smarty->setConfigDir( APPPATH . '/third_party/Smarty-3.1.8/configs' );
+        $smarty->setCacheDir( APPPATH . '/cache' );
+
+
+
+        if(strpos($this->_module,'_child') !== false)
+		{
+			list($path, $_view) = Modules::find($view, $this->_module, 'views/');
+			if($path == FALSE)
+				list($path, $_view) = Modules::find($view, str_replace("_child", "", $this->_module), 'views/');	
+		}else{
+			list($path, $_view) = Modules::find($view, $this->_module."_child", 'views/');
+			if($path == FALSE)
+				list($path, $_view) = Modules::find($view, $this->_module, 'views/');
+		}
+		
+
+
+		if ($path == FALSE && strpos($this->_module,'_child') !== false)
+		{
+			list($path, $_view) = Modules::find($view, str_replace("_child", "", $this->_module), 'views/');		
+		}
+		if ($path != FALSE) {
+			$this->_ci_view_paths = array($path => TRUE) + $this->_ci_view_paths;
+			$view = $_view;
+		}
+		$path_fragment = explode("/", $path);
+		if($path_fragment[0] == "modules")
+		{
+			global $active_show;
+			$controller = &$active_show->controller;
+
+			$theme_path = "themes/".$controller->BuilderEngine->get_option('active_frontend_theme')."/modules/".$this->_module;
+			$theme_file = $theme_path."/".$_view.".php";
+			if(file_exists($theme_file)){
+				$path = "../../".$theme_path;
+
+				$this->_ci_view_paths = array($path => TRUE) + $this->_ci_view_paths;
+				$view = $path."/".$_view;
+			}
+			// To be updated
+			$view_name = basename($view_name);
+		}
+		global $active_show;
+		global $BuilderEngine;
+		$vars['BuilderEngine'] = &$BuilderEngine;
+		$vars['versions'] = &$active_show->controller->versions;
+		$vars['user'] = &$active_show->controller->user;
+
+		$smarty->setTemplateDir( $path );
+		foreach($vars as $key => $value)
+		{
+			$smarty->assign($key, $value);
+		}
+		$smarty->assign("test_var", "qweqweqwe");
+		$smarty->display( $view_name );
+		/*
+		global $active_show;
+		global $BuilderEngine;
+		$vars['BuilderEngine'] = &$BuilderEngine;
+		
+
+
+		$vars['versions'] = &$active_show->controller->versions;
+
+		$vars['user'] = &$active_show->controller->user;
+
+		return $this->_ci_load(array('_ci_view' => $view, '_ci_vars' => $this->_ci_object_to_array($vars), '_ci_return' => $return));
+		*/
+
 	}
 
 	/** Load a module view **/

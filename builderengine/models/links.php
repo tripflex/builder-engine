@@ -20,8 +20,21 @@
             if(self::$cached_links != null)
                 if($id == 0)
                     return self::$cached_links;
-                else
+
+            if($id != 0)
+            {
+                if(isset(self::$cached_links_index[$id]))
+                {
                     return self::$cached_links_index[$id]; 
+                }else
+                {
+                    $this->db->where('id', $id);
+                    $result = $this->db->get('be_links')->result();
+                    $result[0]->tags = trim(str_replace("|", ",", $result[0]->tags), ","); 
+                    self::$cached_links_index[$id] = $result[0];
+                    return $result[0];
+                }
+            }
 
             global $user;
 
@@ -31,7 +44,7 @@
 
             $this->db->from("be_link_permissions");
             
-            $this->db->where('be_link_permissions.group_id in ('.implode(',', $user->groups).')');
+            $this->db->where('be_link_permissions.group_id in ('.implode(',', $user->get_group_ids()).')');
 
             $this->db->join('be_links', 'be_links.id = be_link_permissions.link_id', 'inner');
             

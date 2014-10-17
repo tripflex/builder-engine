@@ -147,6 +147,9 @@ $(document).ready( function () {
                               <? $block->set_default("Click here to compose your post...");?>
                               <? $block->set_size('span8'); ?>
                               <? $block->html('<div class="row"> {content} {elements} </div>')?>
+                              <? $block->set_data('block-editor', 'inline-text-editor');?>
+                              <? $block->set_data('post-id', $post->id);?>
+                              <? $block->set_type('blog_post');?>
                               <? $block->show();?>
                               <?if($post->block == 0) 
                                 {
@@ -304,7 +307,7 @@ $(document).ready( function () {
                         <? $right->set_size('span4');?>
                         <? $right->html('
                           <div class="sidebar" style="float: left">
-                            <div class="row">
+                            <div class="row-fluid">
                               {elements}
                             </div>
                           </div>
@@ -316,21 +319,11 @@ $(document).ready( function () {
                         <?endforeach?>  
 
                         <? $block1 = new Block('be-module-blog-entry-right-recent-posts');?>
-                        <? $block1->set_size('span4');?>
-                        <? $block1->force_data_modification()?>
-                        <? $block1->set_data('content','
-                              <!-- Widget -->
-  
-                              <div class="widget">
-                                 <h4>Recent Posts</h4>
-                                 <ul>
-                                    '.$recent_posts.'
-                                 </ul>
-                              </div>', true);?>
-
-                        <? $block1->save()?>
+                        <? $block1->add_css_class('row-fluid');?>
+                        <? $block1->set_type('blog_recent_posts');?>
+                        
                         <? $block2 = new Block('be-module-blog-entry-right-about');?>
-                        <? $block2->set_size('span4');?>
+                        <? $block2->set_size('row-fluid');?>
                         <? $block2->set_default("
                         <div class=\"widget\">
                         <h4>About</h4>

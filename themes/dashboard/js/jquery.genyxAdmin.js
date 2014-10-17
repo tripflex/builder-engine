@@ -187,8 +187,7 @@
 
        //set current nav element
        function setCurrentNav () {
-            //var domain = document.domain;
-            var domain = '';
+            var domain = document.domain;
             var navig = $('#mainnav>ul');
             var navLinks = navig.find('a');
            //var absoluteUrl = settings.setCurrent.absoluteUrl

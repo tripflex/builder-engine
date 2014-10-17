@@ -42,7 +42,8 @@
                 $this->links->edit($_POST);
                 $this->user->notify('success', "Link edited successfully!");    
             }    
-            $data['groups'] = $this->users->get_groups();
+            $group = new Group();
+            $data['groups'] = $group->get()->all;
             $data['link'] = $this->links->get($id);
             $this->show->backend("edit_link", $data);    
         }

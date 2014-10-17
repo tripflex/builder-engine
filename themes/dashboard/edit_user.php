@@ -16,6 +16,7 @@
     <script src="<?php echo get_theme_path()?>/js/plugins/forms/validation/jquery.validate.js"></script>
     <script src="<?php echo get_theme_path()?>/js/plugins/forms/select2/select2.js"></script> 
     <script src="<?php echo get_theme_path()?>/js/pages/form-validation.js"></script><!-- Init plugins only for page -->
+    <script src="/themes/dashboard/js/plugins/file_manager.js"></script>
     <link href="<?php echo get_theme_path()?>/js/plugins/forms/select2/select2.css" rel="stylesheet" />
     <script>
     $(document).ready(function() {
@@ -142,15 +143,8 @@
                                         <div class="control-group">
                                             <label class="control-label" for="avatar">Avatar</label>
                                             <div class="controls controls-row">
-                                                <div class="profile-avatar">
-                                                <?php if(file_exists("files/avatars/".$user_data->username.".jpg")): ?>
-                                                    <img src="/files/avatars/<?php echo $user_data->username?>.jpg" alt="SuggeElson">
-                                                <?php else: ?>
-                                                    <img src="<?php echo get_theme_path()?>/images/avatars/no_avatar.jpg" alt="SuggeElson">
-                                                <?php endif; ?>
-                                                    
-                                                </div>
-                                                <input type="file" name="avatar">
+                                                
+                                                <input type="file" name="avatar" rel="file_manager" file_value="<?=$user_data->avatar?>">
                                             </div>
                                         </div><!-- End .control-group  -->
                                         <div class="control-group">

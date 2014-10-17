@@ -29,11 +29,8 @@ $(document).ready(function() {
 	//if user change email or username change avatar
 	userField.change(function() {
         
-        $.get('/index.php/admin/ajax/is_valid_avatar/' + encodeURIComponent($("#user").val()), function (data) {
-            if(data == "true")
-                avatar.attr('src', '/files/avatars/' +  encodeURIComponent($("#user").val()) +'.jpg')
-            else
-                avatar.attr('src', '/themes/dashboard/images/avatars/no_avatar.jpg')
+        $.get('/index.php/admin/ajax/get_user_avatar/' + encodeURIComponent($("#user").val()), function (data) {
+            avatar.attr('src', data);
         });
         
 

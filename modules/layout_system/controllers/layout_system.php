@@ -11,7 +11,7 @@
 *
 ***********************************************************/
 
-	class Layout_system extends Module {
+	class Layout_system extends Module_Controller {
 		public function index()
 		{
 			echo "Layout_system::index()";
@@ -39,6 +39,14 @@
 			$this->db->query('truncate be_block_relations');
 			$this->db->query('truncate be_page_versions');
 			redirect(base_url('/'), 'location');  
+		}
+		public function erase_page_blocks()
+		{
+			$page_path = $_GET['page_path'];
+			$this->db->where('path', $page_path);
+			$this->db->delete('be_page_versions');
+			//redirect(base_url('/'), 'location');  
+
 		}
 	}
 

@@ -129,12 +129,11 @@ class Admin_ajax extends BE_Controller {
 
         $this->blocks->save($id, $contents, $style, $classes);
     }
-    public function is_valid_avatar($username)
+    public function get_user_avatar($username)
     {
-        if(file_exists("files/avatars/".$username.".jpg"))
-            echo "true";
-        else
-            echo "false";
+        $user = new User();
+        $user->get_by_username();
+        echo $user->get_avatar();
     }
     public function verify_login()
     {

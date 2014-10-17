@@ -1,16 +1,4 @@
-<?php
-/***********************************************************
-* BuilderEngine v2.0.12
-* ---------------------------------
-* BuilderEngine CMS Platform - Radian Enterprise Systems Limited
-* Copyright Radian Enterprise Systems Limited 2012-2014. All Rights Reserved.
-*
-* http://www.builderengine.com
-* Email: info@builderengine.com
-* Time: 2014-23-04 | File version: 2.0.12
-*
-***********************************************************/
- echo get_header();?>
+<?php echo get_header();?>
 
     <script src="<?php echo get_theme_path()?>/js/plugins/forms/uniform/jquery.uniform.min.js"></script>
     <script src="<?php echo get_theme_path()?>/js/plugins/forms/validation/jquery.validate.js"></script>

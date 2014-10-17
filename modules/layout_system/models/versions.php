@@ -132,7 +132,6 @@
         public function get_active_page_version_id($page_path)
         {
             if(array_key_exists($page_path, self::$active_version)){
-                PC::prucpruc('Got cached page version '.self::$active_version[$page_path].' path '.$page_path);
                 return self::$active_version[$page_path];
             }
 
@@ -142,12 +141,10 @@
             $result = $query->result();
             
             if($result){
-                PC::prucpruc('Found active version '.$result[0]->id." path ".$page_path);
                 self::$active_version[$page_path] = $result[0]->id;
                 return $result[0]->id;    
             }else{
                 $new_version = $this->create_initial_page_version($page_path);
-                PC::prucpruc('New active version '.$new_version.' Page '.$page_path);
                 self::$active_version[$page_path] = $new_version;
                 return $new_version;   
             }    
@@ -211,15 +208,12 @@
         private function load_block_directly($block)
         {
 
-            PC::debug("Loading block directly.");
             $page_path = $this->blocks->get_page_path_of($block->name);
-            PC::debug("versions::load_block_directly() Page Path: $page_path");
             if($page_path === false){
                 PC::error("Coudn't find page path of block name '{$block->name}'");
                 return;
             }
             $pending_version = $this->get_pending_or_active_page_version_id($page_path);
-            PC::debug("Loading block from version $pending_version","versions::load_block_directly");
             $this->db->where("version", $pending_version);
             $this->db->where("`name` = '{$block->name}'");
 
@@ -295,7 +289,8 @@
             $page_version = $this->get_current_page_version();
             $layout_version = $this->get_current_layout_version();
 
-            PC::load_page_blocks("Loading blocks on page version: $page_version layout version: $layout_version");
+            PC::LayoutSystem("Loading blocks on page version: $page_version");
+            PC::LayoutSystem("Loading blocks on layout version: $layout_version");
             $this->db->where("(`version` = '$page_version'");
             $this->db->or_where("`version` = '$layout_version')");
 

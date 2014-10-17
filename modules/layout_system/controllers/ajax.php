@@ -11,7 +11,7 @@
 *
 ***********************************************************/
 
-	class Ajax extends Module {
+	class Ajax extends Module_Controller {
 		public function versions_window($mode)
 		{
 			$this->user->require_group("Frontend Manager");
@@ -141,6 +141,18 @@
     			unset($_POST['page_path']);
     			unset($_POST['block_save']);
 
+    			$styles = $_POST['style'];
+    			unset($_POST['style']);
+    			foreach(explode(";", $styles) as $style )
+    			{
+    				$style = str_replace(":  ", ":", $style);
+    				$data = explode(":", $style);
+    				$data[0] = str_replace("\n ", "", $data[0]);
+    				$data[0] = str_replace("\n", "", $data[0]);
+    				$data[1] = str_replace(" !important", "", $data[1]);
+    				$_POST[$data[0]] = $data[1];
+    			}
+    			PC::styler($_POST);
     			$block->set_data("style", $_POST, true);
     			$block->save();
     		}
@@ -479,7 +491,14 @@
 
 						<?
 						$block->admin_input("custom_classes","text", "Classes");
-						$block->admin_textarea('custom',"CSS");
+						echo'
+							<div class="control-group">
+				                <label class="control-label" for="required" style="width: 80px"><b>CSS</b></label>
+				                <div class="controls controls-row" style="margin-left: 85px">
+				                    <textarea style=" height:250px" name="style" class="span11" ng-model="custom">'.str_replace(" !important", "",str_replace("; ",";\n",$block->build_style())).'</textarea>
+				                </div>
+				            </div>
+							 ';
 						if($block->name == "be_body_styler_".$this->BuilderEngine->get_option('active_frontend_theme'))
 							$block->admin_textarea('custom_code',"Code");
 						?>
@@ -561,7 +580,8 @@
 	        $block->force_data_modification();
 
 	        if(isset($_REQUEST['content']))
-	       		$block->set_data('content', $_REQUEST['content'], true);
+	       		$block->save_content($_REQUEST['content']);
+	       	
 
 			if(isset($_REQUEST['size'])){
 	       		$block->set_data('size', $_REQUEST['size'], true);
@@ -652,6 +672,8 @@
 	        $block->load();
 	        $new_block = new Block($new_block_name);
 	        $new_block->set_type($type);
+	        if($block->is_global())
+	        	$new_block->set_global(true);
 	        $block->add_block($new_block);
 	        $block->save();
 

@@ -55,7 +55,7 @@
             $groups = explode(",", $groups);
  
  
-            $this->db->delete('user_group_link', array('user' => $user));
+            $this->db->delete('link_groups_users', array('user_id' => $user));
  
             foreach($groups as $group)
             {
@@ -64,10 +64,10 @@
                     continue;
  
                 $data = array(
-                    "user" => $user,
-                    "group"=> $group_id
+                    "user_id" => $user,
+                    "group_id"=> $group_id
                 );
-                $this->db->insert("user_group_link", $data);
+                $this->db->insert("link_groups_users", $data);
             }
         }
         function get_group_id_by_name($name)
@@ -95,14 +95,16 @@
                 //'level'             => $data['level'],
                 'date_registered'   => time()
             );
- 
+            if(isset($data['avatar']))
+                $insert['avatar'] = $data['avatar'];
+
             $this->db->insert('users', $insert);
             $user = $this->db->insert_id();
  
             $user_data = $this->get_by_id($user);
             $username = $user_data->username;
  
-            $this->upload_avatar($username);
+            //$this->upload_avatar($username);
  
             if($admin)
                 $data['groups'] = "Members, Administrators, Frontend Editor, Frontend Manager";
@@ -249,6 +251,7 @@
             $update = array(
                 'name'              => $data['name'],
                 'email'             => $data['email'],
+                'avatar'            => $data['avatar'],
                 //'level'             => $data['level'],
  
             );
@@ -293,10 +296,10 @@
         function get_user_group_ids($user)
         {
             $id = mysql_real_escape_string($user);
-            $this->db->where("`user` = '".$id."'", NULL, FALSE);
+            $this->db->where("`user_id` = '".$id."'", NULL, FALSE);
  
-            $this->db->from("user_group_link");
-            $this->db->join('user_groups', 'user_groups.id = user_group_link.group');
+            $this->db->from("link_groups_users");
+            $this->db->join('user_groups', 'user_groups.id = link_groups_users.group_id');
             $query = $this->db->get();
  
             $groups = array();
@@ -328,15 +331,15 @@
         }
         function get_groups_string($user)
         {
-            $this->db->where('user', $user);
-            $query = $this->db->get("user_group_link");
+            $this->db->where('user_id', $user);
+            $query = $this->db->get("link_groups_users");
             $result = $query->result();
  
  
             $groups = array();
             foreach($result as $group)
             {
-                $group_name = $this->get_group_name_by_id($group->group);
+                $group_name = $this->get_group_name_by_id($group->group_id);
                 array_push($groups, $group_name);
             }
  

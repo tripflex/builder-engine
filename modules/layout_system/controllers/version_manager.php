@@ -11,7 +11,7 @@
 *
 ***********************************************************/
 
-	class Version_manager extends Module {
+	class Version_manager extends Module_Controller {
 
 		public function Version_manager()
 		{

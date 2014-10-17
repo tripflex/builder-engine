@@ -26,6 +26,10 @@ $BuilderEngine = null;
         {
             $this->global_blocks = $bool;
         }
+        function is_public_version()
+        {
+            return $this->config->item("public_version") == true;
+        }
         function get_blocks_global() { return $this->global_blocks; }
         function __construct()
         {
@@ -38,6 +42,13 @@ $BuilderEngine = null;
             if($BuilderEngine == null){
                 $BuilderEngine = $this;
             }
+        }
+        public function get_templating_engine()
+        {
+            if($this->config->item("templating_engine") == "smarty")
+                return "smarty";
+            else
+                return "legacy";
         }
         public function is_editor_active()
         {
@@ -243,7 +254,7 @@ $BuilderEngine = null;
                             disable_auto_block_reload = false;
                         }
                     });
-                    <?  $copied_block = $this->user->get_session_data("copied_block");
+                    <?  $copied_block = $user->get_session_data("copied_block");
                     if($copied_block):?>
                         $("#paste-block-button").parent().removeClass("disabled");
                     <?endif;?>  

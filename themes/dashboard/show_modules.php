@@ -36,7 +36,20 @@ echo get_header();?>
                                     <h4>Modules</h4>
                                     <a href="#" class="minimize"></a>
                                 </div><!-- End .widget-title -->
-                            
+                                <? if($this->BuilderEngine->is_public_version()):?>
+                                <div class="row" style="margin-top:20px">
+                                    <form action="<?=url("admin/module/module_system/upload")?>" class="form-horizontal" method="post" enctype="multipart/form-data">
+                                         <div class="control-group">
+                                            <label class="control-label" for="required">Upload:</label>
+                                            <div class="controls controls-row">
+                                                <input type="file" name="module_zip">
+                                                <input class="btn btn-primary" type="submit" value="Install">
+                                            </div>
+                                        </div><!-- End .control-group  -->
+                                    </form>
+                                </div>
+                                <? endif;?>
+
                                 <div class="widget-content">
                                 
                                     <table class="table table-striped table-bordered">
@@ -58,7 +71,13 @@ echo get_header();?>
                                             <td>modules/<?php echo $module->folder?></td>
                                             <td style="text-align: center"><?php echo $module->installer_name?></td>
                                             <td><?php echo date("d-M-Y G:i:s", $module->install_time);?></td>
-                                            <td><a href="/index.php/admin/modules/edit/<?php echo $module->id?>"><span class="i-quill-2"></span></a> <a href="/index.php/admin/links/delete/<?php echo $module->id?>" onclick="return confirm('Are you sure you want to permanently delete this user?')"><span class="i-remove-4"></span></a></td>
+                                            <td>
+                                                <? if($module->installed == 'yes'):?>
+                                                    <a href="/index.php/admin/modules/edit/<?php echo $module->id?>"><span class="i-quill-2"></span></a> <a href="/index.php/admin/links/delete/<?php echo $module->id?>" onclick="return confirm('Are you sure you want to permanently delete this user?')"><span class="i-remove-4"></span></a>
+                                                <? else: ?>
+                                                    <a href="<?=base_url("index.php?/admin/module/module_system/install/".$module->folder)?>"><span class="btn btn-success">Install</span></a>
+                                                <? endif;?>
+                                            </td>
                                         </tr>
                                     <?endforeach;?>
                                        

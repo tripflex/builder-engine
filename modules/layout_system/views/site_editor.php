@@ -39,7 +39,8 @@ function get_blocks()
         $handler = new $classname();
 
         $info = $handler->info();
-
+        if(!$info)
+          continue;
         $entry = array();
         if(isset($info['category_name']) && $info['category_name'] != ""){
             $blocks[$info['category_name']]['type'] = 'category';
@@ -263,6 +264,20 @@ function do_magic()
         );
 }
 <?php endif;?>
+
+$(document).ready(function (){
+  $("#erase-page").click(function(e){
+    e.preventDefault();
+    if(!confirm('This will erase this page content and will revert it to its default one. Are you sure you want to do that?'))
+      return;
+    href = $(this).attr('href');
+    page_path = $( "#publish-button" ).attr('page');
+    $.get(href + "?page_path=" + page_path);
+    
+    setTimeout(function(){var iframe = document.getElementById("content-frame");iframe.src = iframe.src;}, 1000);
+    
+  });
+});
 $(window).ready(function (){
   <?php if( isset($_GET['force-editor-mode'])):?>
   $(window.frames[0].window).ready(function (){
@@ -633,8 +648,12 @@ function showAdminWindow(content)
                                         <li>
                                             <a class="icon icon-diamond" href="#" id="layout-versions-button">Website Versions</a>
                                         </li>
+                                        
                                         <li>
-                                            <a class="" href="<?=base_url('/layout_system/erase_all_blocks')?>" onclick="return confirm('This will erase all your website content and will revert it to stock. Are you sure you want to do that?')"><i class="fa fa-undo"></i>&nbsp;&nbsp;&nbsp;Revert Site to Stock</a>
+                                            <a class="" href="<?=base_url('/layout_system/erase_all_blocks')?>" onclick="return confirm('This will erase all your website content and will revert it to stock. Are you sure you want to do that?') && confirm('Please confirm that this operation will erase all website content and will revert it to its initial state.')"><i class="fa fa-undo"></i>&nbsp;&nbsp;&nbsp;Revert Site to Stock</a>
+                                        </li>
+                                        <li>
+                                            <a class="" id="erase-page" href="<?=base_url('/layout_system/erase_page_blocks')?>" ><i class="fa fa-undo"></i>&nbsp;&nbsp;&nbsp;Revert Page to Stock</a>
                                         </li>
                                     </ul>
                                 </div>

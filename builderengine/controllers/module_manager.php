@@ -83,31 +83,26 @@
             $parameters_string = implode("/", $parameters[1]);
             $page_path = $argv[0]."/".$parameters_string;
 
-            PC::oops($argv);
             $BuilderEngine->set_page_path($page_path);
             
 
-            
-            
-
-
-
             $module_folder = explode("/", $handler[1]);
 
-            $this->load->model("modules_db");
-            $module = $this->modules_db->get_by_folder($module_folder[0]);
+            $module = new Module();
+            $module = $module->where('folder', $module_folder[0])->get();
 
 
-            if(!$module){
+            if(empty($module->id)){
                 if(is_dir(APPPATH."../modules/".$module_folder[0])){
-                    $this->modules_db->insert($module_folder[0]);
-                    $module = $this->modules_db->get_by_folder($module_folder[0]);
+                    $module->folder = $module_folder[0];
+                    $module->installer_id = -1;
+                    $module->installed = 'no';
+                    $module->save();
                 }else{
                     return show_404();
                 }
             }
-
-            if(!$this->user->is_member_of_any($module->permissions['frontend']['ids']) && count($module->permissions['frontend']['ids']) != 0){
+            if($module->installed == 'no' || !$this->user->can_access_module($module, 'frontend')){
                 //show_404();
                 echo"Forbidden";
                 return;
@@ -160,6 +155,19 @@
                 $this->BuilderEngine->register_visit($this->get_page_path());
 
         }
+        function module_exclusive_rights($module)
+        {
+            if($module->folder == "module_system")
+                return true;
+
+            if($module->folder == "layout_system")
+                return true;
+
+            if($module->folder == "builder_market")
+                return true;
+
+            return false;
+        }
         function process($par1)
         {
             global $BuilderEngine;
@@ -176,29 +184,26 @@
             $parameters_string = implode("/", $parameters[1]);
             $page_path = $argv[0]."/".$parameters_string;
 
-            PC::oops($argv);
             $BuilderEngine->set_page_path($page_path);
-            
-
-            
-            
 
 
             $module_folder = explode("/", $handler[1]);
 
-            $this->load->model("modules_db");
-            $module = $this->modules_db->get_by_folder($module_folder[0]);
+            $module = new Module();
+            $module = $module->where('folder', $module_folder[0])->get();
 
 
-            if(!$module){
+            if(empty($module->id)){
                 if(is_dir(APPPATH."../modules/".$module_folder[0])){
-                    $this->modules_db->insert($module_folder[0]);
-                    $module = $this->modules_db->get_by_folder($module_folder[0]);
+                    $module->folder = $module_folder[0];
+                    $module->installer_id = -1;
+                    $module->installed = 'no';
+                    $module->save();
                 }else{
                     return show_404();
                 }
             }
-            if(!$this->user->is_member_of_any($module->permissions['frontend']['ids']) && count($module->permissions['frontend']['ids']) != 0){
+            if(($module->installed == 'no' || !$this->user->can_access_module($module, 'frontend')) && !$this->module_exclusive_rights($module)){
                 //show_404();
                 echo"Forbidden";
                 return;
@@ -214,9 +219,7 @@
             if(isset($handler[0]))
                 $data['contents'] = Modules::run_with_params($handler[0], $parameters[0]);
 
-
-            //die("Data: ".$data['contents']);  
-            if(!isset($handler[0]) || $data['contents'] == "__NO_MODULE__" ){
+            if(!isset($handler[0]) || $data['contents'] == "__NO_MODULE__" || $data['contents'] == "__404__"){
                 $data['contents'] = Modules::run_with_params($handler[1], $parameters[1]);
             }else{
             }
@@ -317,23 +320,33 @@
             }
             
             $handler = trim($handler ,"/");
-            $argv = array_shift($argv);
+            $argv = array_values($argv);
 
-            $module = explode("/", $handler);
+            $module_folder = explode("/", $handler);
 
-            $this->load->model("modules_db");
-            $module = $this->modules_db->get_by_folder($module[0]);
+            $module = new Module();
+            $module = $module->where('folder', $module_folder[0])->get();
 
-            
 
-            if(!$this->user->is_member_of_any($module->permissions['frontend']['ids']) || count($this->user->is_member_of_any($module->permissions['frontend']['ids'])) == 0){
-                show_404();
+            if(empty($module->id)){
+                if(is_dir(APPPATH."../modules/".$module_folder[0])){
+                    $module->folder = $module_folder[0];
+                    $module->installer_id = -1;
+                    $module->installed = 'no';
+                    $module->save();
+                }else{
+                    return show_404();
+                }
+            }
+            if(($module->installed == 'no' || !$this->user->can_access_module($module, 'frontend')) && !$this->module_exclusive_rights($module)){
+                //show_404();
+                echo"Forbidden";
                 return;
             }
+
             if(!is_array($argv))
                 $argv = array($argv);
-
-
+            
             $data['contents'] = Modules::run_with_params($handler, $argv);
             $breadcrumb = explode("/", $handler);
             $breadcrumb[0][0] = strtoupper($breadcrumb[0][0]);

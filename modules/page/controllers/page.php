@@ -13,7 +13,7 @@
 
  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class page extends Module {
+class page extends Module_Controller {
 
     function __construct(){ parent::__construct();}
 	public function index($id = 0)

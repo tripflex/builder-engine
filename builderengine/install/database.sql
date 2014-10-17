@@ -222,6 +222,9 @@ INSERT INTO `be_module_permissions` VALUES ('3', '1', '1', 'backend');
 INSERT INTO `be_module_permissions` VALUES ('4', '2', '2', 'frontend');
 INSERT INTO `be_module_permissions` VALUES ('5', '2', '3', 'frontend');
 INSERT INTO `be_module_permissions` VALUES ('6', '2', '1', 'backend');
+INSERT INTO `be_module_permissions` VALUES ('7', '3', '2', 'frontend');
+INSERT INTO `be_module_permissions` VALUES ('8', '3', '3', 'frontend');
+INSERT INTO `be_module_permissions` VALUES ('9', '3', '1', 'backend');
 
 -- ----------------------------
 -- Table structure for be_modules
@@ -243,6 +246,7 @@ CREATE TABLE `be_modules` (
 -- ----------------------------
 INSERT INTO `be_modules` VALUES ('1', 'Page', 'page', 'unknown', '0', '1394228161', 'true');
 INSERT INTO `be_modules` VALUES ('2', 'Blog', 'blog', 'unknown', '0', '1394228780', 'true');
+INSERT INTO `be_modules` VALUES ('3', 'BuilderPayment', 'builderpayment', '1.0', '0', '1394228780', 'true');
 
 -- ----------------------------
 -- Table structure for be_options
@@ -261,7 +265,7 @@ CREATE TABLE `be_options` (
 -- ----------------------------
 INSERT INTO `be_options` VALUES ('1', 'active_frontend_theme', 'pro');
 INSERT INTO `be_options` VALUES ('2', 'active_backend_theme', 'dashboard');
-INSERT INTO `be_options` VALUES ('3', 'version', '2.0.20');
+INSERT INTO `be_options` VALUES ('3', 'version', '2.0.32');
 
 -- ----------------------------
 -- Table structure for be_page_versions
@@ -351,17 +355,18 @@ CREATE TABLE `be_posts` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for be_user_group_link
+-- Table structure for be_link_groups_users
 -- ----------------------------
-DROP TABLE IF EXISTS `be_user_group_link`;
-CREATE TABLE `be_user_group_link` (
-  `user` int(11) NOT NULL,
-  `group` int(11) NOT NULL,
-  PRIMARY KEY (`user`,`group`)
+DROP TABLE IF EXISTS `be_link_groups_users`;
+CREATE TABLE `be_link_groups_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Records of be_user_group_link
+-- Records of be_link_groups_users
 -- ----------------------------
 
 -- ----------------------------
@@ -423,3 +428,155 @@ CREATE TABLE `be_visits` (
 -- ----------------------------
 -- Records of be_visits
 -- ----------------------------
+
+-- Update 2.0.25 ---
+
+
+ALTER TABLE be_alerts CHANGE `user` `user_id` INT (11);
+
+CREATE TABLE `be_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `remote_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `version` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+ALTER TABLE be_module_permissions CHANGE `module` `module_id` INT (11);
+ALTER TABLE be_module_permissions CHANGE `group` `group_id` INT (11);
+
+
+-- Update 2.0.26 ---
+-- ----------------------------
+-- Table structure for be_builderpayment_addresses
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_addresses`;
+CREATE TABLE `be_builderpayment_addresses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(255) DEFAULT NULL,
+  `middle_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `address_line_1` varchar(255) DEFAULT NULL,
+  `address_line_2` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `zip` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_addresses
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_link_order_bill_addr
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_link_order_bill_addr`;
+CREATE TABLE `be_builderpayment_link_order_bill_addr` (
+  `id` int(11) NOT NULL,
+  `billingaddress_id` int(11) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_link_order_bill_addr
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_link_order_product
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_link_order_product`;
+CREATE TABLE `be_builderpayment_link_order_product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_link_order_product
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_link_order_ship_addr
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_link_order_ship_addr`;
+CREATE TABLE `be_builderpayment_link_order_ship_addr` (
+  `id` int(11) NOT NULL,
+  `shippingaddress_id` int(11) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_link_order_ship_addr
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_link_ship_user
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_link_ship_user`;
+CREATE TABLE `be_builderpayment_link_ship_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shippingaddress_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_link_ship_user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_order_products
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_order_products`;
+CREATE TABLE `be_builderpayment_order_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `quantity` varchar(255) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `custom_data` longblob,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_order_products
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_orders
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_orders`;
+CREATE TABLE `be_builderpayment_orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `module` varchar(255) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `custom_data` longblob,
+  `payment_method` varchar(255) DEFAULT NULL,
+  `currency` varchar(255) DEFAULT NULL,
+  `status` enum('pending','paid','canceled') DEFAULT 'pending',
+  `billingaddress_id` int(11) DEFAULT NULL,
+  `shippingaddress_id` int(11) DEFAULT NULL,
+  `callback` varchar(255) DEFAULT NULL,
+  `user_id` int(11) DEFAULT '0',
+  `gross` decimal(11,2) DEFAULT NULL,
+  `paid_gross` decimal(11,2) DEFAULT '0.00',
+  `shipped` enum('yes','no') DEFAULT 'no',
+  `time_created` int(11) DEFAULT '0',
+  `time_paid` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_orders
+-- ----------------------------
+
+-- Update 2.0.32 --
+ALTER TABLE be_posts ADD text TEXT(0) AFTER title;

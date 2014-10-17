@@ -32,7 +32,7 @@ ini_set('short_open_tag',1);
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
-    define('ENVIRONMENT', 'development');
+    define('ENVIRONMENT', 'production');
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
@@ -41,38 +41,30 @@ ini_set('short_open_tag',1);
  * Different environments will require different levels of error reporting.
  * By default development will show errors but testing and live will hide them.
  */
-class Console
-{
-	public static function debug($var, $tags)
-	{
-        //$buffer = ob_get_contents();
-        //ob_end_clean();
-		//ob_start();
-        PhpConsole\Connector::getInstance()->getDebugDispatcher()->dispatchDebug($var, $tags, 1);
-        //ob_end_clean();
-	    //ob_start();
-        //echo $buffer;
-    }
-}
+
+include("phar://./builderengine/third_party/php_console/PhpConsole.phar");
+$connector = PhpConsole\Connector::getInstance();
+$handler = PhpConsole\Handler::getInstance();
+/* You can override default Handler behavior:
+    $handler->setHandleErrors(false);  // disable errors handling
+    $handler->setHandleExceptions(false); // disable exceptions handling
+    $handler->setCallOldHandlers(false); // disable passing errors & exceptions to prviously defined handlers
+*/
+PhpConsole\Helper::register();
+
 if (defined('ENVIRONMENT'))
 {
     switch (ENVIRONMENT)
     {
         case 'development':
             error_reporting(E_ALL);
-	       include("phar://./builderengine/third_party/php_console/PhpConsole.phar");
-           $handler = PhpConsole\Handler::getInstance();
-            /* You can override default Handler behavior:
-                $handler->setHandleErrors(false);  // disable errors handling
-                $handler->setHandleExceptions(false); // disable exceptions handling
-                $handler->setCallOldHandlers(false); // disable passing errors & exceptions to prviously defined handlers
-            */
-            PhpConsole\Helper::register();
+	        
             $handler->start(); // initialize handlers
         break;
     
         case 'testing':
         case 'production':
+            $connector->setAllowedIpMasks(array('127.0.*.*'));
             error_reporting(0);
         break;
 

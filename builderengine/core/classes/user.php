@@ -10,7 +10,7 @@
 * Time: 2014-23-04 | File version: 2.0.12
 *
 ***********************************************************/
-
+/*
     include ("system/helpers/url_helper.php");
     class User
     {
@@ -167,5 +167,5 @@
             return $this->session->userdata($key);
         }
             
-    }
+    }*/
 ?>

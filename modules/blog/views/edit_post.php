@@ -15,6 +15,12 @@
 
 </script>
 <script src="/builderengine/public/js/editor/adapters/jquery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function (){
+        CKEDITOR.replace( 'blog-editor' );
+    });
+</script>
+
 <script>
 
 $(document).ready( function () {
@@ -79,9 +85,9 @@ $(document).ready( function () {
                     </div><!-- End .control-group  -->
 
                     <div class="control-group">
-                    <label class="control-label " for="required">Content</label>
+                        <label class="control-label" for="image">Content</label>
                         <div class="controls controls-row">
-                            <a id="post-edit-contents" href="/blog/<?=$post->id?>"><span class="btn btn-primary">Edit Contents</span></a>
+                            <textarea id="blog-editor" name="text"><?=$post->text?></textarea>
                         </div>
                     </div><!-- End .control-group  -->
 

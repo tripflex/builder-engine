@@ -68,11 +68,7 @@ class Admin_main extends BE_Controller {
         $location_cache_id = "be_visitor_location_".$_SERVER['REMOTE_ADDR'];
         $location = $this->cache->fetch($location_cache_id);
         if($location == null){
-            $remote_addr = $_SERVER['REMOTE_ADDR'];
-            if($remote_addr == '127.0.0.1'){
-                $remote_addr = '115.28.162.2';
-            }
-            $location = $this->getLocation($remote_addr);
+            $location = $this->getLocation($_SERVER['REMOTE_ADDR']);
             $this->cache->insert($location_cache_id, $location, 2678400);
         }
             

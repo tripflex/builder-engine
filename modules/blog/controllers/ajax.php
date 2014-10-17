@@ -13,7 +13,7 @@
 
  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class ajax extends Module {
+class ajax extends Module_Controller {
 
 	public function index($id = 0)
 	{

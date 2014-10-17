@@ -1,3 +1,15 @@
+<script src="/builderengine/public/js/googleapis/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+        $("p").click(function(){
+            $("p").append(document)
+        }
+    }
+
+    
+</script>
+<p>click</p>
 <?php
 
 //    function getLocation()
@@ -14,7 +26,8 @@
 //    $ipdata = getLocation();
 //    var_dump($ipdata);
 
-    phpinfo()
+   
+    //phpinfo()
 
 
 ?>

@@ -57,6 +57,7 @@
                 if(file_exists(APPPATH."update/update.php"))
                     include(APPPATH."update/update.php");
                 
+                unlink(APPPATH."update/update.php");
                 echo 'success';
             } else {
                 echo 'failed';
@@ -90,6 +91,8 @@
 
             $current_version = $remote_version;
             $remote_version = file_get_contents("http://update-server.builderengine.com/check.php?version=".$current_version.'&time='.time());
+
+            Modules::run("builder_market/admin/update_products");
 
             $this->load->model("users");
             $this->users->delete_alerts_with_tag("be-update");

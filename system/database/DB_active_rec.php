@@ -351,6 +351,19 @@ class CI_DB_active_record extends CI_DB_driver {
 
 	// --------------------------------------------------------------------
 
+	public function execute_file($file_path)
+	{
+		$sql=file_get_contents($file_path);
+		foreach (explode(";", $sql) as $sql) 
+		{
+			$sql = trim($sql);
+			//echo  $sql.'<br/>============<br/>';
+			if($sql) 
+			{
+				$this->query($sql);
+			} 
+		} 
+	}
 	/**
 	 * Where
 	 *
