@@ -16,7 +16,7 @@ class modules_db extends CI_Model {
 
 	function modules_db()
 	{
-			$CI =& get_instance();
+            $CI =& get_instance();
             $CI->load->model('users');
             $this->users = &$CI->users;   
 	}

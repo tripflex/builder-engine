@@ -175,7 +175,7 @@ $BuilderEngine = null;
             <script src="/builderengine/public/js/editor/ckeditor.js"></script>
 
             <script src="/builderengine/public/js/googleapis/angularjs/1.0.8/angular.min.js"></script>
-            <script src="http://vitalets.github.io/angular-xeditable/dist/js/xeditable.js"></script>
+            <script src="/builderengine/public/js/angular/xeditable.js"></script>
 
             
             <script type="text/javascript">
