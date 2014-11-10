@@ -21,11 +21,9 @@ global $cache;
     class BE_Controller extends MX_Controller{
         public $show;
         public $user;
-        public static $s_user = null;
         public $links_array;
         protected $page_path;
         protected $versions = null;
-        private static $s_events = null;
         function BE_Controller()
         {
             $this->page_path = false;
@@ -34,18 +32,16 @@ global $cache;
             $active_controller = $this;
             parent::__construct();
 
-            $this->load->helper("url");
             if(!$this->is_installed() && $this->uri->segment(2) != "install"){
                 redirect('/admin/install/index', 'location');
             }
 
-            if($this->is_installed()){
+            if($this->is_installed())
                 $this->load->database();
-                @$this->load->library('datamapper');
-            }
 
-            
+            $this->load->library('datamapper');
 
+            $this->load->helper("url");
 
             if(!$active_show)
                 $this->show = new Show($this);
@@ -57,7 +53,6 @@ global $cache;
             
 
             if($this->is_installed()){
-            $this->load->model('user');
                 global $cache;
                 $this->load->model("cache");
                 $cache = $this->cache;
@@ -65,38 +60,16 @@ global $cache;
 
                 $this->BuilderEngine->load_settings();
 
-                if(!EventManager::is_initialized() && !EventManager::is_initializing())
-                {
-                    EventManager::set_initializing(true);
-                    $modules = new Module();
-
-                    foreach($modules->get() as $module)
-                    {
-                        if($module->folder == "module_system")
-                            continue;
-                        Modules::run($module->folder."/register_events");
-                    }
-
-                    EventManager::set_initialized(true);
-                }
-                
-                if(self::$s_user == null)
-                {
-
-                    self::$s_user = new User();
-                    $session = $this->session;
-                    self::$s_user->_init($session);
-                }
-                
+                $session = $this->session;
                 $user_model = $this->users;
+                $this->user = new User($session, $user_model);
 
                 global $user;
-                $user = self::$s_user;
-                $this->user = &self::$s_user;
+                $user = $this->user;
                 $CI =& get_instance();
-                $this->load->model('links');
+                $CI->load->model('links');
 
-                $this->links_array = $this->links->get();
+                $this->links_array = $CI->links->get();
 
                 
             }
@@ -113,14 +86,6 @@ global $cache;
 
             $this->layout_system->load->model('versions');
             $this->versions = &$this->layout_system->versions;
-
-            if($this->is_installed())
-            {
-                $this->load->model('Module');
-                $this->load->model('Group');
-                $this->load->model('Group_module_permission');
-            }
-            
         }
         public function get_builderengine()
         {
@@ -180,7 +145,7 @@ global $cache;
         
     }
 
-    class Module_Controller extends BE_Controller{
+    class Module extends BE_Controller{
         private $initialized = false;
         private function _initialize()
         {

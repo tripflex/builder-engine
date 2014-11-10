@@ -1,4 +1,16 @@
-<?php if(!isset($_GET['ajax'])):?>
+<?php
+/***********************************************************
+* BuilderEngine v2.0.12
+* ---------------------------------
+* BuilderEngine CMS Platform - Radian Enterprise Systems Limited
+* Copyright Radian Enterprise Systems Limited 2012-2014. All Rights Reserved.
+*
+* http://www.builderengine.com
+* Email: info@builderengine.com
+* Time: 2014-23-04 | File version: 2.0.12
+*
+***********************************************************/
+ if(!isset($_GET['ajax'])):?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -220,18 +232,18 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon24 i-bell-2"></i>
                                 <?php if(isset($user)):?>
-                                    <?php if(count($this->user->alert->get()->all) > 0): ?>
-                                        <span class="notification red"><?php echo count($this->user->alert->get()->all)?></span>
+                                    <?php if(count($user->get_alerts()) > 0): ?>
+                                        <span class="notification red"><?php echo count($user->get_alerts())?></span>
                                     <?php endif;?>
                                 <?php endif;?>
                             </a>
                             <ul class="dropdown-menu">
                             <?php 
                             if(isset($user)):?>
-                                <?php if( count($this->user->alert->get()->all) == 0): ?>
+                                <?php if( count($user->get_alerts()) == 0): ?>
                                     <li><a href="javascript: void(0)" class=""><i class="icon16 i-info"></i> There are no notifications...</a></li>
                                 <?php else:?>   
-                                <?php foreach($this->user->alert->get()->all as $alert): ?>
+                                <?php foreach($user->get_alerts() as $alert): ?>
                                     <li><a href="<?php echo $alert->url?>" class=""><i class="icon16 <?php echo $alert->icon?>"></i><?php echo $alert->text?></a></li>
                                 <?php endforeach;?>
                                 <?php endif;?>   

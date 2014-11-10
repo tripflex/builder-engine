@@ -11,7 +11,6 @@
 *
 ***********************************************************/
 
-// To be updated
  class Block{
     private $html;
     private $options = array();
@@ -74,19 +73,6 @@
     {
         return $this->type;
     }
-    public function save_content($content)
-    {
-        if($this->type != 'generic')
-        {
-            include_once("blocks/".$this->type."/".$this->type.".php");
-
-            $classname = $this->type."_block_handler";
-            $handler = new $classname();
-            $handler->set_block($this);
-            return $handler->save_content($content);
-        }else
-            $this->set_data('content', $content, true);
-    }
     public function generate_admin()
     {
         if($this->type != 'generic')
@@ -129,7 +115,7 @@
     }
     public function css($attribute)
     {
-        $css_attributes = $this->data('style');
+        $css_attributes = $this->data('css_attributes');
         if(isset($css_attributes[$attribute]))
             return $css_attributes[$attribute];
         else
@@ -138,15 +124,16 @@
 
     public function set_css($attribute, $value)
     {
-        $css_attributes = $this->data('style');
+        $css_attributes = $this->data('css_attributes');
         $css_attributes[$attribute] = $value;
-        $this->set_data('style', $css_attributes);
+        $this->set_data('css_attributes', $css_attributes);
     }
 
     public function load()
     {
         if($this->loaded)
             return true;
+        PC::Loading("Loading block ".$this->name);
         $this->loaded = $this->layout_system->blocks->load($this);
         if(!$this->loaded){
 
@@ -212,15 +199,14 @@
         if($this->type != 'generic' && $this->type != ""){
             $content = $this->generate_content();
         }
-        $editor = $this->data('block-editor');
 
-        if($this->type == 'generic' || ($editor != null && $editor = 'inline-text-editor'))
+        if($this->type == 'generic')
             $block_editor = 'ckeditor';
         else
             $block_editor = 'custom';
 
 
-        $this->html = preg_replace('/{content}/', "<div class='block-content' block-type='{$this->type}' block-editor='$block_editor' block-name='{$this->name}'>".$content."</div>", $this->html, 1);
+        $this->html = preg_replace('/{content}/', "<div class='block-content' block-editor='$block_editor' block-name='{$this->name}'>".$content."</div>", $this->html, 1);
         if ($this->is_new_block){
             PC::WARNING("This is new block - saving ".$this->name);
             $this->save();
@@ -242,14 +228,7 @@
 
         $style = $this->build_style();
 
-        $html_id = $this->data('html_id');
-        $html_id_string = "";
-
-        if($html_id != null)
-        {
-            $html_id_string = " id=\"$html_id\" ";
-        }
-        $output = "<div $html_id_string class='block {$classes} {$add_classes} {$this->get_css_classes()}' style=\"{$style}\" name='{$this->name}'>".$this->html."</div>";
+        $output = "<div class='block {$classes} {$add_classes} {$this->get_css_classes()}' style=\"{$style}\" name='{$this->name}'>".$this->html."</div>";
         
         if($this->output){
             echo $output;
@@ -276,10 +255,7 @@
         }
 
         if(isset($style_arr['background-image'])){
-            if(strpos($style_arr['background-image'], 'url(') === FALSE)
-                $style_arr['background-image'] = " url(".$style_arr['background-image'].")";
-            else
-                $style_arr['background-image'] = $style_arr['background-image'];
+            $style_arr['background-image'] = " url(".$style_arr['background-image'].")";
         }
 
         if(isset($style_arr['custom'])){
@@ -311,7 +287,7 @@
         $block->output(false);
         $output .= $block->show();
       }
-      $this->html = preg_replace('/{elements}/', "<div class='block-children block-children-connectable row-fluid' sortable='true' block-name='{$this->name}'>".$output."</div>", $this->html, 1);
+      $this->html = preg_replace('/{elements}/', "<div class='block-children block-children-connectable' sortable='true' block-name='{$this->name}'>".$output."</div>", $this->html, 1);
     }
     public function add_css_class($class)
     {
@@ -392,6 +368,7 @@
     }
     public function initialize($db_result)
     {
+        PC::debug($db_result, 'block::initialize');
         //print_r($db_result);
         //echo debug_print_backtrace();
         $this->id   = $db_result->id; 

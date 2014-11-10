@@ -1,23 +1,5 @@
 var editor_mode = "";
 var span_step = 0;
-var fluid_span = {
-  0: 0,
-  1: 0.06382978723404255,
-  2: 0.14893617021276595,
-  3: 0.23404255319148934,
-  4: 0.31914893617021278,
-  5: 0.4042553191489362,
-  6: 0.4893617021276595,
-  7: 0.5744680851063829,
-  8: 0.6595744680851064,
-  9: 0.7446808510638297,
-  10: 0.8297872340425532,
-  11: 0.9148936170212765,
-  12: 1,
-  13: 1
-
-}
-var row = null;
 function notifyChange()
 {
     window.parent.notifyChange();
@@ -25,7 +7,7 @@ function notifyChange()
 $(document).ready( function () {
 
   //alert(screen.width);
-  CKEDITOR.on( 'instanceCreated', function( event ) {
+	CKEDITOR.on( 'instanceCreated', function( event ) {
         var editor = event.editor,
             element = editor.element;
         // Customize editors for headers and tag list.
@@ -58,7 +40,7 @@ $(document).ready( function () {
 
     });
 
-  
+	
 
 
   
@@ -172,29 +154,29 @@ function editModeEnable()
   console.log('editModeEnable()');
   initializeCustomEditorClickEvent();
   
-  $("[block-editor='ckeditor']").each(
-    function ()
-    {
-      var attr = $(this).attr('block-editor');
-      if (typeof attr === 'undefined' || attr === false) 
-        return;
+	$("[block-editor='ckeditor']").each(
+		function ()
+		{
+			var attr = $(this).attr('block-editor');
+			if (typeof attr === 'undefined' || attr === false) 
+				return;
 
-      if(attr == 'ckeditor')
-      {
-        $(this).attr("contenteditable", "true");
-        
+			if(attr == 'ckeditor')
+			{
+				$(this).attr("contenteditable", "true");
+				
 
-        $("#edit-button").parent().addClass("active");
-      }
+				$("#edit-button").parent().addClass("active");
+			}
 
-    }
-  );
-  CKEDITOR.inlineAll();
+		}
+	);
+	CKEDITOR.inlineAll();
 }
 
 function editModeDisable()
 {
-  $(".block-content").attr("contenteditable", "false");
+	$(".block-content").attr("contenteditable", "false");
     var editor;
     for (editor in CKEDITOR.instances) {
         CKEDITOR.instances[editor].destroy();
@@ -228,7 +210,6 @@ function moveModeEnable()
         /*connectWith: '.block-children-connectable',*/
         forceHelperSize: true,
         start: function(e, ui){
-            ui.placeholder.css('margin-left', '0px');
             ui.placeholder.height(ui.item.height() - 4);
             ui.placeholder.width(ui.item.width() - 4);
         },
@@ -267,53 +248,15 @@ function moveModeDisable()
   $(".block-children").sortable("destroy");
   $('.sortable-handle').remove();
 }
-function getParentRowInfo(obj)
-{
-  up = obj;
-
-  while(!up.is('body'))
-  {
-    up = up.parent();
-    if(up.hasClass('row-fluid'))
-    {
-      w = parseInt(up.css('width'));
-      console.log("Detected row width: " + w );
-      return {type: 'row-fluid', width: w};
-    }
-
-    if(up.hasClass('row'))
-    {
-      console.log("Detected standard row ");
-      return {type: 'row', width: 0};
-    }
-  }
-      console.log("Assumed standard row ");
-  return {type: 'row', step: 0};
-}
 function detectSpanWidth(tester)
-{/*
+{
   span = parseInt(get_element_span(tester));
   span -= 1;
   width = parseInt($(tester).css('width'));
   width -= 80;
 
-  return Math.round(width/span);*/
-  if(row == null)
-  row = getParentRowInfo(tester);
-
-  if(row['type'] == "row")
-  {
-    span = parseInt(get_element_span(tester));
-    span -= 1;
-    width = parseInt($(tester).css('width'));
-    width -= 80;
-    console.log("Returning something");
-    return Math.round(width/span);
-  }else
-  {
-    return row['step'];
-
-  }
+  return Math.round(width/span);
+  //alert(Math.round(width/span));
 }
 /* Block Resize Functions Begin*/
 function resizeModeEnable()
@@ -322,11 +265,6 @@ function resizeModeEnable()
       $(this).resizable({
 
         resize: function () {
-          if(row == null){
-            console.log("Getting new row");
-            row = getParentRowInfo($(this));
-          }
-          if(row['type'] == "row"){
             if(span_step == 0)
               span_step = detectSpanWidth($(this));
 
@@ -362,50 +300,9 @@ function resizeModeEnable()
               }
             }
 
-          }else{
-             span_step = 0;
-              if(span_step == 0)
-                span_step = detectSpanWidth($(this));
 
-              console.log(span_step);
-              current_width = parseInt($(this).css("width"));
-              $(this).css("width", "");
-
-              
-              span = get_element_span(this);
-              console.log("Current width " + current_width + " next step is " + row['width'] * fluid_span[(span + 1)] + " row width " + row['width'] + " span " + fluid_span[(span + 1)]);
-              if(current_width > row['width'] * fluid_span[(span + 1)]  )
-              {
-
-                current_span = get_element_span(this);
-                console.log("Current span " + current_span);
-                if(current_span != 12 && check_total_span_sum($(this).parent()) != 12)
-                {
-                  $(this).removeClass("span" + current_span);
-                  current_span++;
-                  $(this).addClass("span" + current_span);
-                  $(this).css("width", "");
-                  
-                }
-              }
-
-              if(current_width < row['width'] * fluid_span[(span - 1)])
-              {
-
-                current_span = get_element_span(this);
-                if(current_span != 1)
-                {
-                  $(this).removeClass("span" + current_span);
-                  current_span--;
-                  $(this).addClass("span" + current_span);
-                  $(this).css("width", "");
-                
-                }
-              }
-          }
           },
         start: function (event, ui) {
-          row = null;
                 $(this).attr('resizing', 'true');
                 block = ui.originalElement;
                 min_height = block.css('min-height');
@@ -418,7 +315,6 @@ function resizeModeEnable()
                 
         }, 
         stop: function (event, ui) {
-          span_step = 0;
                 $(this).attr('resizing', 'false');
                 block = ui.originalElement;
                 height = block.css('height');

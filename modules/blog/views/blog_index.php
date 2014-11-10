@@ -40,10 +40,11 @@
                                     <? if($entry->image): ?>
                                     <!-- Thumbnail -->
                                     <div class="bthumb">
-                                       <a href="<?=base_url("/blog/".$entry->id)?>"><img src="/files/images/<?=$entry->image?>" alt="" /></a>
+                                       <a href="#"><img src="<?=$entry->image?>" alt="" /></a>
                                     </div>
                                     <? endif;?>
-                                    <p><?=substr(strip_tags($entry->text),0,150)?></p>
+                                    <? $data = json_decode($entry->data)?>
+                                    <p><?=substr(strip_tags($data->content),0,150)?></p>
                                     <div class="button"><a href="<?=base_url("/blog/".$entry->id)?>">Read More...</a></div>
                                 </div>
                                     
@@ -65,35 +66,30 @@
                               
                            </div>
                         </div>                        
-                        <? $right = new Block('be-module-blog-entry-right');?> 
-                        <? $right->set_size('span4');?>
-                        <? $right->html('
-                          <div class="sidebar" style="float: left">
-                            <div class="row-fluid">
-                              {elements}
-                            </div>
-                          </div>
-                        ');?>   
-
-                        <? $recent_posts = "";?>
-                        <?foreach($recent as $entry):?>
-                            <? $recent_posts .= "<li><a href='".base_url('/blog/'.$entry->id)."'>{$entry->title}</a></li>";?>
-                        <?endforeach?>  
-
-                        <? $block1 = new Block('be-module-blog-entry-right-recent-posts');?>
-                        <? $block1->add_css_class('row-fluid');?>
-                        <? $block1->set_type('blog_recent_posts');?>
-                        
-                        <? $block2 = new Block('be-module-blog-entry-right-about');?>
-                        <? $block2->set_size('row-fluid');?>
-                        <? $block2->set_default("
-                        <div class=\"widget\">
-                        <h4>About</h4>
-                        <p>Nulla facilisi. Sed justo dui, id erat. Morbi auctor adipiscing tempor. Phasellus condimentum rutrum aliquet. Quisque eu consectetur erat. Proin rutrum, erat eget posuere semper, <em>arcu mauris posuere tortor</em>,velit at <a href=\"#\">magna sollicitudin cursus</a> ac ultrices magna. Aliquam consequat, purus vitae auctor ullamcorper, sem velit convallis quam, a pharetra justo nunc et mauris. </p>
-                      </div>");?>
-                        <? $right->add_block($block1);?>
-                        <? $right->add_block($block2);?>
-                        <? $right->show();?>
+                        <div class="span4">
+                           <div class="sidebar">
+                              <!-- Widget -->
+                              <div class="widget">
+                                 <h4>Search</h4>
+                                 <form method="get" id="searchform" action="" class="form-search">
+                                    <input type="text" value="" name="search" id="search" class="input-medium"/>
+                                    <button type="submit" class="btn">Search</button>
+                                 </form>
+                              </div>
+                              <div class="widget">
+                                 <h4>Recent Posts</h4>
+                                 <ul>
+                                    <?foreach($post as $entry):?>
+                                        <li><?=$entry->title?></li>
+                                    <?endforeach?>
+                                 </ul>
+                              </div>
+                              <div class="widget">
+                                 <h4>About</h4>
+                                 <p>Nulla facilisi. Sed justo dui, id erat. Morbi auctor adipiscing tempor. Phasellus condimentum rutrum aliquet. Quisque eu consectetur erat. Proin rutrum, erat eget posuere semper, <em>arcu mauris posuere tortor</em>,velit at <a href="#">magna sollicitudin cursus</a> ac ultrices magna. Aliquam consequat, purus vitae auctor ullamcorper, sem velit convallis quam, a pharetra justo nunc et mauris. </p>
+                              </div>                              
+                           </div>                                                
+                        </div>
                      </div>
                      
                      

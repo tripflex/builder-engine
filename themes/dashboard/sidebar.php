@@ -149,33 +149,10 @@ $(document).ready(function(){
                         </li>
 
                         <li>
-                            <a href="#">
+                            <a <?php echo href("admin", "modules/market")?>>
                                 <span class="icon"><i class="icon20 i-cart-4"></i></span>
                                 <span class="txt">Builder Market</span>
                             </a>
-                            <ul class="sub">
-                                <li>
-                                    <a <?php echo href("admin", "module/builder_market/modules")?>>
-                                        <span class="icon"><i class="icon20 i-cube-3"></i></span>
-                                        <span class="txt">Modules</span>
-                                    </a>
-                 
-                                </li>
-                                <li>
-                                    <a <?php echo href("admin", "module/builder_market/themes")?>>
-                                        <span class="icon"><i class="icon20 i-stack-picture"></i></span>
-                                        <span class="txt">Themes</span>
-                                    </a>
-                 
-                                </li>
-                                <li>
-                                    <a <?php echo href("admin", "module/builder_market/blocks")?>>
-                                        <span class="icon"><i class="icon20 i-cube4"></i></span>
-                                        <span class="txt">Blocks (Coming Soon)</span>
-                                    </a>
-                 
-                                </li>
-                            </ul>
                         </li>
                             
                         
@@ -193,7 +170,7 @@ $(document).ready(function(){
                                     </a>
                                     <ul class="sub">
                                        <?php foreach( $links[$key] as $sub_key => $link): 
-                                        
+                                            
                                        ?>
                                         <li>
                                             <?php if(is_array($links[$key][$sub_key])): ?>

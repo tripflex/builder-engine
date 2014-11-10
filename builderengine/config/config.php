@@ -1,4 +1,18 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php 
+
+/***********************************************************
+* BuilderEngine v2.0.12
+* ---------------------------------
+* BuilderEngine CMS Platform - Radian Enterprise Systems Limited
+* Copyright Radian Enterprise Systems Limited 2012-2014. All Rights Reserved.
+*
+* http://www.builderengine.com
+* Email: info@builderengine.com
+* Time: 2014-23-04 | File version: 2.0.12
+*
+***********************************************************/
+
+ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
 $config['site_installed'] = true;
@@ -50,7 +64,7 @@ $config['index_page'] = '';
 | 'ORIG_PATH_INFO'    Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']    = 'AUTO';
+$config['uri_protocol']    = 'REQUEST_URI';
 
 /*
 |--------------------------------------------------------------------------
@@ -347,7 +361,7 @@ $config['time_reference'] = 'local';
 | in your view files.  Options are TRUE or FALSE (boolean)
 |
 */
-$config['rewrite_short_tags'] = FALSE;
+$config['rewrite_short_tags'] = TRUE;
 
 
 /*

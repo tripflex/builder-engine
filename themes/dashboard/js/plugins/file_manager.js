@@ -14,7 +14,7 @@
                 var file_name_array = file_name_string.split(".");
                 var file_extension = file_name_array[file_name_array.length - 1];
 
-                $('[name="'+this.name + '"]').parent().parent().append('<div class="profile-avatar"><img  class="file_preview" src="" alt="No Image" ></div>');
+                $('[name="'+this.name + '"]').parent().parent().append('<div class="controls controls-row"><img class="file_preview" style="float: left" src="" alt="No Image" height="120px;" width="120px"></div>');
                 $('[name="'+this.name + '"]').parent().parent().find(".file_preview").attr('src', file);
             }
         });
@@ -30,8 +30,8 @@
         var file_extension = file_name_array[file_name_array.length - 1];
         if(file_extension == "jpg" || file_extension == "png")
         {
-            $('[name="'+target + '"]').parent().parent().find(".file_preview").parent().remove();
-            $('[name="'+target + '"]').parent().parent().append('<div class="profile-avatar"><img  class="file_preview" src="" alt="No Image" ></div>');
+            $('[name="'+target + '"]').parent().parent().find(".file_preview").remove();
+            $('[name="'+target + '"]').parent().parent().append('<div class="controls controls-row"><img class="file_preview" src="" alt="No Image" height="120px;" width="120px"></div>');
             $('[name="'+target + '"]').parent().parent().find(".file_preview").attr('src', file);
 
         }    

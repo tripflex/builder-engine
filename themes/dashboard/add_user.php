@@ -18,7 +18,6 @@
                 <script src="<?php echo get_theme_path()?>/js/plugins/forms/validation/jquery.validate.js"></script>
                 <script src="<?php echo get_theme_path()?>/js/plugins/forms/select2/select2.js"></script> 
                 <script src="<?php echo get_theme_path()?>/js/pages/form-validation.js"></script><!-- Init plugins only for page -->
-                <script src="/themes/dashboard/js/plugins/file_manager.js"></script>
                 <link href="<?php echo get_theme_path()?>/js/plugins/forms/select2/select2.css" rel="stylesheet" />
                 
                 <script>
@@ -147,7 +146,7 @@
                                             <label class="control-label" for="avatar">Avatar</label>
                                             <div class="controls controls-row">
                                 
-                                                <input type="file" name="avatar" rel="file_manager" file_value="">
+                                                <input type="file" name="avatar">
                                             </div>
                                         </div><!-- End .control-group  -->
                                         <div class="control-group">

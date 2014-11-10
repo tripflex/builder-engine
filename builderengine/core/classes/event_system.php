@@ -14,80 +14,27 @@
     class EventManager
     {
         private static $events = array();
-        private static $is_initialized = false;
-        private static $is_initializing = false;
 
-        private static $queue = array();
-
-        public static function subscribe($event, $callback)
+        public static function register($event, $callback)
         {
             if(!array_key_exists($event, self::$events))
                 self::$events[$event] = array();
                 
             array_push(self::$events[$event], $callback);
-            
-            PC::EventManager("Subscribing $event -> $callback");
-            PC::EventManager(self::$events);
-        }
-        
-        public static function fire($event, &$args = array())
-        {
-            if(self::is_initializing())
-            {
-                PC::EventManager("Queuing event $event");
-                $queued_event['event'] = $event;
-                $queued_event['args'] = $args;
-                array_push(self::$queue, $queued_event);
-                return;
-            }
-            
-
-            if(!array_key_exists($event, self::$events))
-            {
-                PC::EventManager("Event $event not found");
-                return;
-            }
-                PC::EventManager("Yey firing");
-
-            foreach(self::$events[$event] as $callback)
-            {
-                PC::EventManager("Firing event $event");
-                Modules::run($callback, $args);
-            }
-            
                 
         }
-
-        public static function is_initialized()
+        
+        public static function fire($event)
         {
-            return self::$is_initialized;
-        }
-        public static function set_initialized($bool)
-        {
-            self::$is_initialized = $bool;
-
-            if($bool == true)
+            if(!array_key_exists($event, self::$events))
+                return;
+            
+            foreach(self::$events[$event] as $callback)
             {
-                self::$is_initializing = false;
-
-                PC::EventManager("Preparing to process ".count(self::$events)." elements in queue");
-                foreach(self::$queue as $event)
-                {
-                    PC::EventManager("Processing ".$event['event']." elements in queue");
-                    self::fire($event['event'], $event['args']);
-                }
+                call_user_func($callback);
             }
+                
         }
-
-        public static function is_initializing()
-        {
-            return self::$is_initializing;
-        }
-        public static function set_initializing($bool)
-        {
-            self::$is_initializing = $bool;
-        }
-
     }                        
     function add_action($event, $callback)
     {

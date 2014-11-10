@@ -277,17 +277,17 @@ CREATE TABLE `be_posts` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for be_link_groups_users
+-- Table structure for be_user_group_link
 -- ----------------------------
-DROP TABLE IF EXISTS `be_link_groups_users`;
-CREATE TABLE `be_link_groups_users` (
+DROP TABLE IF EXISTS `be_user_group_link`;
+CREATE TABLE `be_user_group_link` (
   `user` int(11) NOT NULL,
   `group` int(11) NOT NULL,
   PRIMARY KEY (`user`,`group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Records of be_link_groups_users
+-- Records of be_user_group_link
 -- ----------------------------
 
 -- ----------------------------

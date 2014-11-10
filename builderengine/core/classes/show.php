@@ -54,12 +54,8 @@
         {
             global $active_show;
             $data['user']   = $active_show->controller->get_user();
-            $data['BuilderEngine'] = &$active_show->controller->get_builderengine();
-
-            if($data['BuilderEngine']->get_templating_engine() == "smarty" && strpos(get_theme_path(), "dashboard") === FALSE)
-                $active_show->controller->load->smart_view(APPPATH."..".get_theme_path().$file,$data); 
-            else
-                $active_show->controller->load->view("../..".get_theme_path().$file,$data); 
+            $data['BuilderEngine'] = $active_show->controller->get_builderengine();
+            $active_show->controller->load->view("../..".get_theme_path().$file,$data);   
         }
 
         // parse constants ( site name, slogan, motto or whatever constant strings )
@@ -106,20 +102,24 @@
                 $view = $data['contents'];
                 
             } else {
-                if($data['BuilderEngine']->get_templating_engine() == "smarty" && strpos(get_theme_path(), "dashboard") === FALSE)
-                    $view = $active_show->controller->load->smart_view(APPPATH."..".get_theme_path()."full.php",$data, true);
-                else
-                    $view = $active_show->controller->load->view("../..".get_theme_path()."full.php",$data, true);
-
+               
+                $view = $active_show->controller->load->view("../..".get_theme_path()."full.php",$data, true);
             }
             $active_show->controller->module_parser->parse($view);
             
+
+
             if(!isset($_GET['iframed']) && ($data['user']->is_member_of("Administrators") || $data['user']->is_member_of("Frontend Editor") || $data['user']->is_member_of("Frontend Manager") )){
                 $ci =& get_instance();
 
                 $parse = parse_url($pageURL);
                 //print_r ($parse); 
-                $editor_url = $parse['scheme']."://".$parse['host']."/editor".$parse['path']; 
+                if($parse['port'] == 80)
+                { 
+                    $editor_url = $parse['scheme']."://".$parse['host']."/editor".$parse['path']; 
+                } else {
+                    $editor_url = $parse['scheme']."://".$parse['host'].":".$parse['port']."/editor".$parse['path'];
+                }
                 $editor_url = str_replace("index.php", "", $editor_url);
                 $ci->output->append_output("
                         <style>
@@ -192,11 +192,7 @@
 
         function component($string) {
             global $active_show;
-            if($active_show->controller->get_builderengine()->BuilderEngine->get_templating_engine() == "smarty" && strpos(get_theme_path(), "dashboard") === FALSE)
-                $active_show->controller->load->smart_view(APPPATH."..".get_theme_path().$string.".php");
-            else
-                $active_show->controller->load->view("../..".get_theme_path().$string.".php");
-            
+            $active_show->controller->load->view("../..".get_theme_path().$string.".php");
         }
 
         function backend($string, $data=array()){
@@ -297,30 +293,21 @@
 
     function build_link($type, $relative_href)
     {
-        if(array_key_exists('HTTP_MOD_REWRITE', $_SERVER) && $_SERVER['HTTP_MOD_REWRITE'] == "On")
-            $href_prefix = "";
-        else
-            $href_prefix = "/index.php?";
-
         switch($type)
         {
             case "site":
-                return base_url($href_prefix."/".$relative_href);
+                return "/index.php/".$relative_href;
             case "module":
-                return base_url($href_prefix."/".$relative_href);
+                return "/index.php/module/".$relative_href;
             case "module_admin":
-                return base_url($href_prefix."/admin/".$relative_href);
+                return "/index.php/admin/module/".$relative_href;
             case "admin":
-                return base_url($href_prefix."/admin/".$relative_href);
+                return "/index.php/admin/".$relative_href;
 
         }
 
     }
-    function url($relative_href)
-    {
 
-        return build_link('site', $relative_href);
-    }
     function href($type, $relative_href)
     {
         return "href=\"".build_link($type, $relative_href)."\"";

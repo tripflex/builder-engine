@@ -13,7 +13,7 @@
 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class blog extends Module_Controller {
+class blog extends Module {
 
 	public function index($id = 0)
 	{
@@ -25,7 +25,7 @@ class blog extends Module_Controller {
         $this->load->model('users');
 
         $search = "";
-        if($_GET && isset($_GET['search']))
+        if($_GET)
         {
             $search = $_GET['search'];
         }
