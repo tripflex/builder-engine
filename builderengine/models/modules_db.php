@@ -164,5 +164,4 @@ class modules_db extends CI_Model {
     }
 
 }
-
 ?>

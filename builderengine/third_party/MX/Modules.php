@@ -1,6 +1,4 @@
-<?php
-
-(defined('BASEPATH')) OR exit('No direct script access allowed');
+<?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 (defined('EXT')) OR define('EXT', '.php');
 
@@ -8,7 +6,7 @@ global $CFG;
 
 /* get module locations from config settings or use the default module location and offset */
 is_array(Modules::$locations = $CFG->item('modules_locations')) OR Modules::$locations = array(
-    APPPATH . 'modules/' => '../modules/',
+	APPPATH.'modules/' => '../modules/',
 );
 
 /* PHP5 spl_autoload */
@@ -46,235 +44,231 @@ spl_autoload_register('Modules::autoload');
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- * */
-class Modules {
+ **/
 
-    public static $routes, $registry, $locations;
+class Modules
+{
+	public static $routes, $registry, $locations;
 
-    /**
-     * Run a module controller method
-     * Output from module is buffered and returned.
-     * */
-    public static function run($module) {
-        $split_module = explode("/", $module);
+	/**
+	* Run a module controller method
+	* Output from module is buffered and returned.
+	**/
+	
 
-        $method = 'index';
+	public static function run($module) {
+		$split_module = explode("/", $module);
 
-        if (($pos = strrpos($module, '/')) != FALSE) {
-            $method = substr($module, $pos + 1);
-            $module = substr($module, 0, $pos);
-        }
+		$method = 'index';
 
-        if (strpos($module, '/') !== false)
-            $child_module = str_replace("/", "_child/", $module) . "_child";
-        else
-            $child_module = $module . "_child";
+		if(($pos = strrpos($module, '/')) != FALSE) {
+			$method = substr($module, $pos + 1);
+			$module = substr($module, 0, $pos);
+		}
 
-        if ($class = self::load($child_module)) {
-            if (method_exists($class, $method)) {
-                ob_start();
-                $args = func_get_args();
-                $output = call_user_func_array(array($class, $method), array_slice($args, 1));
-                $buffer = ob_get_clean();
-                return ($output !== NULL) ? $output : $buffer;
-            }
-        } else
-        if ($class = self::load($module)) {
-            if (count($split_module) == 3)
-                if (!class_exists($split_module[1]))
-                    return "__NO_MODULE__";
-            if (method_exists($class, $method)) {
-                ob_start();
-                $args = func_get_args();
-                /* echo "Before slice:";
-                  print_r($args);
-                  echo "After slice:";
-                  print_r(array_slice($args, 1)); */
-                $output = call_user_func_array(array($class, $method), array_slice($args, 1));
-                $buffer = ob_get_clean();
-                return ($output !== NULL) ? $output : $buffer;
-            }
-        }
+		if(strpos($module,'/') !== false)
+			$child_module = str_replace("/", "_child/", $module)."_child";
+		else
+			$child_module = $module."_child";
 
-        return "__NO_MODULE__";
-        log_message('error', "Module controller failed to run: {$module}/{$method}");
-    }
+		if($class = self::load($child_module)) {
+			if (method_exists($class, $method))	{
+				ob_start();
+				$args = func_get_args();
+				$output = call_user_func_array(array($class, $method), array_slice($args, 1));
+				$buffer = ob_get_clean();
+				return ($output !== NULL) ? $output : $buffer;
+			}
+		}else
+		if($class = self::load($module)) {
+			if(count($split_module) == 3)
+				if(!class_exists($split_module[1]))
+					return "__NO_MODULE__";
+			if (method_exists($class, $method))	{
+				ob_start();
+				$args = func_get_args();
+				/*echo "Before slice:";
+				print_r($args);
+				echo "After slice:";
+				print_r(array_slice($args, 1));*/
+				$output = call_user_func_array(array($class, $method), array_slice($args, 1));
+				$buffer = ob_get_clean();
+				return ($output !== NULL) ? $output : $buffer;
+			}
+		}
 
-    //the run function could become private
-    public static function run_with_params($handler, $parameters = array()) {
-        switch (count($parameters)) {
+		return "__NO_MODULE__";
+		log_message('error', "Module controller failed to run: {$module}/{$method}");
+	}
+
+	//the run function could become private
+	public static function run_with_params($handler, $parameters = array()) {
+		switch(count($parameters)) {
             case 0:
                 return Modules::run($handler);
             case 1:
-                return Modules::run($handler, $parameters[0]);
+                return Modules::run($handler,$parameters[0]);
             case 2:
-                return Modules::run($handler, $parameters[0], $parameters[1]);
+                return Modules::run($handler,$parameters[0],$parameters[1]);
             case 3:
-                return Modules::run($handler, $parameters[0], $parameters[1], $parameters[2]);
+                return Modules::run($handler,$parameters[0],$parameters[1],$parameters[2]);
             case 4:
-                return Modules::run($handler, $parameters[0], $parameters[1], $parameters[2], $parameters[3]);
+                return Modules::run($handler,$parameters[0],$parameters[1],$parameters[2],$parameters[3]);
             case 5:
-                return Modules::run($handler, $parameters[0], $parameters[1], $parameters[2], $parameters[3], $parameters[4]);
+                return Modules::run($handler,$parameters[0],$parameters[1],$parameters[2],$parameters[3],$parameters[4]);
             case 6:
-                return Modules::run($handler, $parameters[0], $parameters[1], $parameters[2], $parameters[3], $parameters[4], $parameters[5]);
+                return Modules::run($handler,$parameters[0],$parameters[1],$parameters[2],$parameters[3],$parameters[4],$parameters[5]);
             case 7:
-                return Modules::run($handler, $parameters[0], $parameters[1], $parameters[2], $parameters[3], $parameters[4], $parameters[5], $parameters[6]);
+                return Modules::run($handler,$parameters[0],$parameters[1],$parameters[2],$parameters[3],$parameters[4],$parameters[5],$parameters[6]);
             case 8:
-                return Modules::run($handler, $parameters[0], $parameters[1], $parameters[2], $parameters[3], $parameters[4], $parameters[5], $parameters[6], $parameters[7]);
+                return Modules::run($handler,$parameters[0],$parameters[1],$parameters[2],$parameters[3],$parameters[4],$parameters[5],$parameters[6],$parameters[7]);
         }
-    }
+	}
 
-    /** Load a module controller * */
-    public static function load($module) {
+	/** Load a module controller **/
+	public static function load($module) {
 
-        (is_array($module)) ? list($module, $params) = each($module) : $params = NULL;
+		(is_array($module)) ? list($module, $params) = each($module) : $params = NULL;	
+		
+		/* get the requested controller class name */
+		$alias = strtolower(basename($module));
 
-        /* get the requested controller class name */
-        $alias = strtolower(basename($module));
+		/* create or return an existing controller from the registry */
+		if ( ! isset(self::$registry[$alias])) {
+			
+			/* find the controller */
+			list($class) = CI::$APP->router->locate(explode('/', $module));
+	
+			/* controller cannot be located */
+			if (empty($class)) return;
+	
+			/* set the module directory */
+			$path = APPPATH.'controllers/'.CI::$APP->router->fetch_directory();
+			
+			/* load the controller class */
+			$class = $class.CI::$APP->config->item('controller_suffix');
+			self::load_file($class, $path);
+			
+			/* create and register the new controller */
+			$controller = ucfirst($class);	
+			if(class_exists($controller."_controller")){
+				$controller = $controller."_controller";
+			}
+			self::$registry[$alias] = new $controller($params);
+		}
+		
+		return self::$registry[$alias];
+	}
 
-        /* create or return an existing controller from the registry */
-        if (!isset(self::$registry[$alias])) {
+	/** Library base class autoload **/
+	public static function autoload($class) {
 
-            /* find the controller */
-            list($class) = CI::$APP->router->locate(explode('/', $module));
+		/* don't autoload CI_ prefixed classes or those using the config subclass_prefix */
+		if (strstr($class, 'CI_') OR strstr($class, config_item('subclass_prefix'))) return;
 
-            /* controller cannot be located */
-            if (empty($class))
-                return;
+		/* autoload Modular Extensions MX core classes */
+		if (strstr($class, 'MX_') AND is_file($location = dirname(__FILE__).'/'.substr($class, 3).EXT)) {
+			include_once $location;
+			return;
+		}
 
-            /* set the module directory */
-            $path = APPPATH . 'controllers/' . CI::$APP->router->fetch_directory();
+		/* autoload core classes */
+		if(is_file($location = APPPATH.'core/'.$class.EXT)) {
+			include_once $location;
+			return;
+		}
 
-            /* load the controller class */
-            $class = $class . CI::$APP->config->item('controller_suffix');
-            self::load_file($class, $path);
+		/* autoload library classes */
+		if(is_file($location = APPPATH.'libraries/'.$class.EXT)) {
+			include_once $location;
+			return;
+		}
+	}
 
-            /* create and register the new controller */
-            $controller = ucfirst($class);
-            if (class_exists($controller . "_controller")) {
-                $controller = $controller . "_controller";
-            }
-            self::$registry[$alias] = new $controller($params);
-        }
+	/** Load a module file **/
+	public static function load_file($file, $path, $type = 'other', $result = TRUE)	{
 
-        return self::$registry[$alias];
-    }
+		$file = str_replace(EXT, '', $file);
+		$location = $path.$file.EXT;
 
-    /** Library base class autoload * */
-    public static function autoload($class) {
+		if ($type === 'other') {
+			if (class_exists($file, FALSE))	{
+				log_message('debug', "File already loaded: {$location}");
+				return $result;
+			}
+			include_once $location;
+		} else {
 
-        /* don't autoload CI_ prefixed classes or those using the config subclass_prefix */
-        if (strstr($class, 'CI_') OR strstr($class, config_item('subclass_prefix')))
-            return;
+			/* load config or language array */
+			include $location;
 
-        /* autoload Modular Extensions MX core classes */
-        if (strstr($class, 'MX_') AND is_file($location = dirname(__FILE__) . '/' . substr($class, 3) . EXT)) {
-            include_once $location;
-            return;
-        }
+			if ( ! isset($$type) OR ! is_array($$type))
+				show_error("{$location} does not contain a valid {$type} array");
 
-        /* autoload core classes */
-        if (is_file($location = APPPATH . 'core/' . $class . EXT)) {
-            print "<pre>";
-            print_r($location);
-            print "</pre>";
-            include_once $location;
-            return;
-        }
+			$result = $$type;
+		}
+		log_message('debug', "File loaded: {$location}");
+		return $result;
+	}
 
-        /* autoload library classes */
-        if (is_file($location = APPPATH . 'libraries/' . $class . EXT)) {
-            include_once $location;
-            return;
-        }
-    }
+	/**
+	* Find a file
+	* Scans for files located within modules directories.
+	* Also scans application directories for models, plugins and views.
+	* Generates fatal error if file not found.
+	**/
+	public static function find($file, $module, $base) {
 
-    /** Load a module file * */
-    public static function load_file($file, $path, $type = 'other', $result = TRUE) {
+		$segments = explode('/', $file);
 
-        $file = str_replace(EXT, '', $file);
-        $location = $path . $file . EXT;
+		$file = array_pop($segments);
+		$file_ext = (pathinfo($file, PATHINFO_EXTENSION)) ? $file : $file.EXT;
 
-        if ($type === 'other') {
-            if (class_exists($file, FALSE)) {
-                log_message('debug', "File already loaded: {$location}");
-                return $result;
-            }
-            include_once $location;
-        } else {
+		$path = ltrim(implode('/', $segments).'/', '/');
+		$module ? $modules[$module] = $path : $modules = array();
 
-            /* load config or language array */
-            include $location;
+		if ( ! empty($segments)) {
+			$modules[array_shift($segments)] = ltrim(implode('/', $segments).'/','/');
+		}
 
-            if (!isset($$type) OR ! is_array($$type))
-                show_error("{$location} does not contain a valid {$type} array");
+		foreach (Modules::$locations as $location => $offset) {
+			foreach($modules as $module => $subpath) {
+				$fullpath = $location.$module.'/'.$base.$subpath;
 
-            $result = $$type;
-        }
-        log_message('debug', "File loaded: {$location}");
-        return $result;
-    }
+				if ($base == 'libraries/' AND is_file($fullpath.ucfirst($file_ext)))
+					return array($fullpath, ucfirst($file));
 
-    /**
-     * Find a file
-     * Scans for files located within modules directories.
-     * Also scans application directories for models, plugins and views.
-     * Generates fatal error if file not found.
-     * */
-    public static function find($file, $module, $base) {
+				if (is_file($fullpath.$file_ext)) return array($fullpath, $file);
+			}
+		}
 
-        $segments = explode('/', $file);
+		return array(FALSE, $file);
+	}
 
-        $file = array_pop($segments);
-        $file_ext = (pathinfo($file, PATHINFO_EXTENSION)) ? $file : $file . EXT;
+	/** Parse module routes **/
+	public static function parse_routes($module, $uri) {
 
-        $path = ltrim(implode('/', $segments) . '/', '/');
-        $module ? $modules[$module] = $path : $modules = array();
+		/* load the route file */
+		if ( ! isset(self::$routes[$module])) {
+			if (list($path) = self::find('routes', $module, 'config/') AND $path)
+				self::$routes[$module] = self::load_file('routes', $path, 'route');
+		}
 
-        if (!empty($segments)) {
-            $modules[array_shift($segments)] = ltrim(implode('/', $segments) . '/', '/');
-        }
+		if ( ! isset(self::$routes[$module])) return;
 
-        foreach (Modules::$locations as $location => $offset) {
-            foreach ($modules as $module => $subpath) {
-                $fullpath = $location . $module . '/' . $base . $subpath;
+		/* parse module routes */
+		foreach (self::$routes[$module] as $key => $val) {
 
-                if ($base == 'libraries/' AND is_file($fullpath . ucfirst($file_ext)))
-                    return array($fullpath, ucfirst($file));
+			$key = str_replace(array(':any', ':num'), array('.+', '[0-9]+'), $key);
 
-                if (is_file($fullpath . $file_ext))
-                    return array($fullpath, $file);
-            }
-        }
+			if (preg_match('#^'.$key.'$#', $uri)) {
+				if (strpos($val, '$') !== FALSE AND strpos($key, '(') !== FALSE) {
+					$val = preg_replace('#^'.$key.'$#', $val, $uri);
+				}
 
-        return array(FALSE, $file);
-    }
-
-    /** Parse module routes * */
-    public static function parse_routes($module, $uri) {
-
-        /* load the route file */
-        if (!isset(self::$routes[$module])) {
-            if (list($path) = self::find('routes', $module, 'config/') AND $path)
-                self::$routes[$module] = self::load_file('routes', $path, 'route');
-        }
-
-        if (!isset(self::$routes[$module]))
-            return;
-
-        /* parse module routes */
-        foreach (self::$routes[$module] as $key => $val) {
-
-            $key = str_replace(array(':any', ':num'), array('.+', '[0-9]+'), $key);
-
-            if (preg_match('#^' . $key . '$#', $uri)) {
-                if (strpos($val, '$') !== FALSE AND strpos($key, '(') !== FALSE) {
-                    $val = preg_replace('#^' . $key . '$#', $val, $uri);
-                }
-
-                return explode('/', $module . '/' . $val);
-            }
-        }
-    }
+				return explode('/', $module.'/'.$val);
+			}
+		}
+	}
 
 }
