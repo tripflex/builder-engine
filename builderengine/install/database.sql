@@ -27,7 +27,7 @@ CREATE TABLE `be_alerts` (
   `icon` varchar(255) DEFAULT NULL,
   `tag` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_alerts
@@ -45,7 +45,7 @@ CREATE TABLE `be_block_relations` (
   PRIMARY KEY (`parent`,`child`,`version`),
   KEY `version_parent` (`parent`,`version`),
   KEY `version` (`version`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_block_relations
@@ -82,7 +82,7 @@ CREATE TABLE `be_cache` (
   `object` blob,
   `timeout` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_cache
@@ -96,7 +96,7 @@ CREATE TABLE `be_link_permissions` (
   `link_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`link_id`,`group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_link_permissions
@@ -181,7 +181,7 @@ CREATE TABLE `be_links` (
   `parent` int(11) DEFAULT '0',
   `order` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_links
@@ -207,11 +207,11 @@ INSERT INTO `be_links` VALUES ('14', 'Timeline', '/page-timeline.html', '', null
 DROP TABLE IF EXISTS `be_module_permissions`;
 CREATE TABLE `be_module_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `module` int(11) NOT NULL DEFAULT '0',
+  `module_id` int(11) NOT NULL DEFAULT '0',
   `group` int(11) DEFAULT NULL,
   `access` enum('frontend','backend') DEFAULT 'frontend',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_module_permissions
@@ -236,7 +236,7 @@ CREATE TABLE `be_modules` (
   `install_time` int(11) DEFAULT NULL,
   `active` enum('true','false') DEFAULT 'true',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_modules
@@ -280,7 +280,7 @@ CREATE TABLE `be_page_versions` (
   KEY `path_active` (`path`,`active`),
   KEY `path_status` (`path`,`status`),
   KEY `path` (`path`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_page_versions
@@ -299,7 +299,7 @@ CREATE TABLE `be_pages` (
   `slug` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_pages
@@ -325,7 +325,7 @@ CREATE TABLE `be_post_comments` (
   `text` text,
   `time` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_post_comments
@@ -344,7 +344,7 @@ CREATE TABLE `be_posts` (
   `author` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `title_fulltext` (`title`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_posts
@@ -358,7 +358,7 @@ CREATE TABLE `be_user_group_link` (
   `user` int(11) NOT NULL,
   `group` int(11) NOT NULL,
   PRIMARY KEY (`user`,`group`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_user_group_link
@@ -373,7 +373,7 @@ CREATE TABLE `be_user_groups` (
   `name` varchar(60) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_user_groups
@@ -401,7 +401,7 @@ CREATE TABLE `be_users` (
   PRIMARY KEY (`id`),
   FULLTEXT KEY `user_search_fulltext` (`username`,`name`,`email`),
   FULLTEXT KEY `username_fulltext` (`username`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of be_users
@@ -418,7 +418,7 @@ CREATE TABLE `be_visits` (
   `date` date DEFAULT NULL,
   `timestamp` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_visits

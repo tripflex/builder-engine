@@ -43,8 +43,10 @@ class Admin_ajax extends BE_Controller {
 
     public function get_server_load()
     {
-        $load = sys_getloadavg();
-        $load = $load[0] * 100 / 4;
+        if (stristr(PHP_OS, 'linux')) {
+            $load = sys_getloadavg();
+            $load = $load[0] * 100 / 4;
+        }
         echo (string)$load;
    
     }

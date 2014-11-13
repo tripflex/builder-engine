@@ -342,7 +342,7 @@ $BuilderEngine = null;
         {
             global $active_show;
 
-            if(!$active_show->controller->is_installed())
+           if(!$active_show->controller->is_installed())
                 return;
 
             switch($type)

@@ -50,17 +50,22 @@ class admin_install extends BE_Controller {
         $password = urldecode($_POST['password']);
         $db = urldecode($_POST['db']);
 
+//        error_reporting(0);
+//        $conn = mysql_connect($host, $user, $password) or die("Could not connect to MySQL server. Please go back and check your settings.");
+//        // mysql_select_db($db) or die("Could not connect to MySQL database. Please go back and check your settings.");
+//        // $db_connect = mysql_connect($host, $user, $password);
+//        $db_selected = mysql_select_db($db);
+//        if (!$db_selected){
+//            //print "<pre>"; print_r($db ."create database"); print "</pre>";
+//            $sql = "CREATE DATABASE " . $db;
+//            mysql_query($sql);
+//        }
 
-        //error_reporting(0);
-        mysql_connect($host, $user, $password) or die("Could not connect to MySQL server. Please go back and check your settings.");
-        // mysql_select_db($db) or die("Could not connect to MySQL database. Please go back and check your settings.");
-        // $db_connect = mysql_connect($host, $user, $password);
-        $db_selected = mysql_select_db($db);
-        if (!$db_selected){
-            //print "<pre>"; print_r($db ."create database"); print "</pre>";
-            $sql = "CREATE DATABASE " . $db;
-            mysql_query($sql);
+        $mysqli=new mysqli($host, $user, $password) or die("Could not connect to MySQL server. Please go back and check your settings.");
+        if( $mysqli->query("Create database if not exists " . $db) === FALSE){
+            die("Failed creating new database: " . $db);
         }
+        mysqli_select_db($mysqli, $db);
 
         $queries = file_get_contents(APPPATH . "install/database.sql");
 
@@ -73,9 +78,9 @@ class admin_install extends BE_Controller {
         foreach (explode(";", $queries) as $query) {
             if ($query == '')
                 continue;
-
-            mysql_query($query) or die("Database Error: " . mysql_error() . "<br>Query: '$query'");
+            $mysqli->query($query) or die("Database Error: " . mysqli_error($mysqli)  . "<br>Query: '$query'");
         }
+        //$mysqli->close();
         /*
           $command = 'mysql'
           . ' --host=' . $host
