@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Data Mapper ORM bootstrap
  *

@@ -1,22 +1,11 @@
 <?php
-/***********************************************************
-* BuilderEngine v2.0.12
-* ---------------------------------
-* BuilderEngine CMS Platform - Radian Enterprise Systems Limited
-* Copyright Radian Enterprise Systems Limited 2012-2014. All Rights Reserved.
-*
-* http://www.builderengine.com
-* Email: info@builderengine.com
-* Time: 2014-23-04 | File version: 2.0.12
-*
-***********************************************************/
 
 class modules_db extends CI_Model {
 	private $users;
 
 	function modules_db()
 	{
-            $CI =& get_instance();
+			$CI =& get_instance();
             $CI->load->model('users');
             $this->users = &$CI->users;   
 	}
@@ -25,9 +14,9 @@ class modules_db extends CI_Model {
 		$data = array(
 			"name"			=> ucfirst($folder),
 			"folder"		=> $folder,
-			"installer_id"	=> -1,
+			"installer_id"	=> 0,
 			"install_time"	=> time(),
-			"active"		=> "false",
+			"active"		=> "true",
 			"version"		=> "unknown");
 
 		$this->db->insert("modules", $data);
@@ -164,4 +153,5 @@ class modules_db extends CI_Model {
     }
 
 }
+
 ?>

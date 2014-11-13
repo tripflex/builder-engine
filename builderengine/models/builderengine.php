@@ -1,16 +1,4 @@
 <?php
-/***********************************************************
-* BuilderEngine v2.0.12
-* ---------------------------------
-* BuilderEngine CMS Platform - Radian Enterprise Systems Limited
-* Copyright Radian Enterprise Systems Limited 2012-2014. All Rights Reserved.
-*
-* http://www.builderengine.com
-* Email: info@builderengine.com
-* Time: 2014-23-04 | File version: 2.0.12
-*
-***********************************************************/
-
 /* 
  * TODO: Major cleanup and optimization
  */
@@ -26,10 +14,6 @@ $BuilderEngine = null;
         {
             $this->global_blocks = $bool;
         }
-        function is_public_version()
-        {
-            return $this->config->item("public_version") == true;
-        }
         function get_blocks_global() { return $this->global_blocks; }
         function __construct()
         {
@@ -42,13 +26,6 @@ $BuilderEngine = null;
             if($BuilderEngine == null){
                 $BuilderEngine = $this;
             }
-        }
-        public function get_templating_engine()
-        {
-            if($this->config->item("templating_engine") == "smarty")
-                return "smarty";
-            else
-                return "legacy";
         }
         public function is_editor_active()
         {
@@ -100,7 +77,7 @@ $BuilderEngine = null;
         }
         function integrate_builderengine_styles()
         {?>
-            <link href="/builderengine/public/css/googleapis/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+            <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
             <link href="http://vitalets.github.io/angular-xeditable/dist/css/xeditable.css" rel="stylesheet" />
             <link rel='stylesheet' id='font-awesome-4-css'  href='/builderengine/public/css/font-awesome.css?ver=4.0.3' type='text/css' media='all' />
 
@@ -174,8 +151,8 @@ $BuilderEngine = null;
             
             <script src="/builderengine/public/js/editor/ckeditor.js"></script>
 
-            <script src="/builderengine/public/js/googleapis/angularjs/1.0.8/angular.min.js"></script>
-            <script src="/builderengine/public/js/angular/xeditable.js"></script>
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+            <script src="http://vitalets.github.io/angular-xeditable/dist/js/xeditable.js"></script>
 
             
             <script type="text/javascript">
@@ -254,7 +231,7 @@ $BuilderEngine = null;
                             disable_auto_block_reload = false;
                         }
                     });
-                    <?  $copied_block = $user->get_session_data("copied_block");
+                    <?  $copied_block = $this->user->get_session_data("copied_block");
                     if($copied_block):?>
                         $("#paste-block-button").parent().removeClass("disabled");
                     <?endif;?>  
@@ -267,6 +244,7 @@ $BuilderEngine = null;
                    
                     <? endif; ?>
                     //$("html").attr('ng-app','');
+                    //$.getScript("http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js");
                 });
             </script>
             

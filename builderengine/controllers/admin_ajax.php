@@ -1,17 +1,4 @@
-<?php
-/***********************************************************
-* BuilderEngine v2.0.12
-* ---------------------------------
-* BuilderEngine CMS Platform - Radian Enterprise Systems Limited
-* Copyright Radian Enterprise Systems Limited 2012-2014. All Rights Reserved.
-*
-* http://www.builderengine.com
-* Email: info@builderengine.com
-* Time: 2014-23-04 | File version: 2.0.12
-*
-***********************************************************/
-
- if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 //
 
 class Admin_ajax extends BE_Controller {
@@ -43,8 +30,10 @@ class Admin_ajax extends BE_Controller {
 
     public function get_server_load()
     {
-        $load = sys_getloadavg();
-        $load = $load[0] * 100 / 4;
+        if (stristr(PHP_OS, 'linux')) {
+            $load = sys_getloadavg();
+            $load = $load[0] * 100 / 4;
+        }
         echo (string)$load;
    
     }
