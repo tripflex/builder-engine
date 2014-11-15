@@ -208,7 +208,7 @@ DROP TABLE IF EXISTS `be_module_permissions`;
 CREATE TABLE `be_module_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `module_id` int(11) NOT NULL DEFAULT '0',
-  `group` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
   `access` enum('frontend','backend') DEFAULT 'frontend',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
