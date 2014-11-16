@@ -1,16 +1,4 @@
 <?php
-/***********************************************************
-* BuilderEngine v2.0.12
-* ---------------------------------
-* BuilderEngine CMS Platform - Radian Enterprise Systems Limited
-* Copyright Radian Enterprise Systems Limited 2012-2014. All Rights Reserved.
-*
-* http://www.builderengine.com
-* Email: info@builderengine.com
-* Time: 2014-23-04 | File version: 2.0.12
-*
-***********************************************************/
-
     global $active_show;
 
     class Show{
@@ -114,7 +102,12 @@
 
                 $parse = parse_url($pageURL);
                 //print_r ($parse); 
-                $editor_url = $parse['scheme']."://".$parse['host']."/editor".$parse['path']; 
+                if($parse['port'] == 80)
+                { 
+                    $editor_url = $parse['scheme']."://".$parse['host']."/editor".$parse['path']; 
+                } else {
+                    $editor_url = $parse['scheme']."://".$parse['host'].":".$parse['port']."/editor".$parse['path'];
+                }
                 $editor_url = str_replace("index.php", "", $editor_url);
                 $ci->output->append_output("
                         <style>

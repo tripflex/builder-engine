@@ -1,15 +1,4 @@
 <?php
-/***********************************************************
-* BuilderEngine v2.0.12
-* ---------------------------------
-* BuilderEngine CMS Platform - Radian Enterprise Systems Limited
-* Copyright Radian Enterprise Systems Limited 2012-2014. All Rights Reserved.
-*
-* http://www.builderengine.com
-* Email: info@builderengine.com
-* Time: 2014-23-04 | File version: 2.0.12
-*
-***********************************************************/
 
 class modules_db extends CI_Model {
 	private $users;
@@ -91,14 +80,14 @@ class modules_db extends CI_Model {
 		$permissions['backend']['names'] = array();
 
 
-		$this->db->where("module", $id);
+		$this->db->where("module_id", $id);
 		$query = $this->db->get("module_permissions");
 		$result = $query->result();
 		
 		foreach ($result as $key => $permission)
 		{
-			array_push($permissions[$permission->access]['ids'], intval($permission->group));
-			array_push($permissions[$permission->access]['names'], $this->users->get_group_name_by_id($permission->group));
+			array_push($permissions[$permission->access]['ids'], intval($permission->group_id));
+			array_push($permissions[$permission->access]['names'], $this->users->get_group_name_by_id($permission->group_id));
 		}
 
 		return $permissions;
@@ -141,7 +130,7 @@ class modules_db extends CI_Model {
 	}
 	private function erase_permissions($id)
 	{
-		$this->db->where('module', $id);
+		$this->db->where('module_id', $id);
         $this->db->delete('module_permissions');
 	}
 	private function insert_permissions($module_id, $access_type, $groups = array())
@@ -153,8 +142,8 @@ class modules_db extends CI_Model {
         foreach($groups as $group)
         {
             $data = array(
-                "module"   	=> $module_id,
-                "group"   	=> $CI->users->get_group_id_by_name($group),
+                "module_id"   	=> $module_id,
+                "group_id"   	=> $CI->users->get_group_id_by_name($group),
                 "access"	=> $access_type
             );
             $this->db->insert('module_permissions', $data);

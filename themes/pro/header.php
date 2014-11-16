@@ -12,8 +12,8 @@
   <meta name="keywords" content="<?=$BuilderEngine->get_option('website_keywords')?>">
   <meta name="author" content="BuilderEngine">
   <?=$BuilderEngine->integrate_builderengine_styles()?>
-  <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
+  <link href='/builderengine/public/css/googleapis/css_PT_Sans_400_700_400italic.css' rel='stylesheet' type='text/css'>
+  <link href='/builderengine/public/css/googleapis/css_Oswald_400_700.css' rel='stylesheet' type='text/css'>
 
   <!-- Stylesheets -->
   <link href="<?=get_theme_path()?>style/bootstrap.css" rel="stylesheet">

@@ -151,9 +151,6 @@ class Modules
 			
 			/* create and register the new controller */
 			$controller = ucfirst($class);	
-			if(class_exists($controller."_controller")){
-				$controller = $controller."_controller";
-			}
 			self::$registry[$alias] = new $controller($params);
 		}
 		

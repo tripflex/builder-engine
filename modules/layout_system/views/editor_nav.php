@@ -16,7 +16,7 @@
 <script src="/builderengine/public/js/bootstrap.js"></script> <!-- Bootstrap -->
 <script src="/builderengine/public/js/frontend-editor.js"></script>
 <script type="text/javascript" src="/builderengine/public/js/versions-management.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script type="text/javascript" src="/builderengine/public/js/angularjs/1.0.8/angular.min.js"></script>
 
 <script>
   function reload_angular()

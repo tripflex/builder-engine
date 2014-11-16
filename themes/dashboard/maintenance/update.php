@@ -24,7 +24,7 @@ function progress(percent, instant)
 }
 function get_updates_num()
 {
-    $.get("http://" + document.domain + '/index.php/admin/update/get_updates_num', function (data) {
+    $.get('/index.php/admin/update/get_updates_num', function (data) {
         updates = data;
     });
 }
@@ -40,7 +40,7 @@ function finishing()
 {                                                          
     $("#status-message").html("Finishing Update...");
     
-    $.get("http://" + document.domain + '/index.php/admin/update/finish', function (data) {
+    $.get('/index.php/admin/update/finish', function (data) {
 
         if(data == "success"){
             progress(100,false);    
@@ -70,7 +70,7 @@ function update_database()
     $("#status-message").html("Updating database...");
 
     
-    $.get("http://" + document.domain + '/index.php/admin/update/update_db', function (data) {
+    $.get('/index.php/admin/update/update_db', function (data) {
 
         if(data == "success"){
             progress(80, false);    
@@ -87,7 +87,7 @@ function update_php()
     $("#status-message").html("Updating files...");
     progress(60,false);
     
-    $.get("http://" + document.domain + '/index.php/admin/update/update_files', function (data) {
+    $.get('/index.php/admin/update/update_files', function (data) {
         if(data == "success")    
             setTimeout("update_database()", 2000)
         else
@@ -98,7 +98,7 @@ function download_update()
 {
     $("#status-message").html("Downloading Update...");
     
-    $.get("http://" + document.domain + '/index.php/admin/update/download/', function (data) {
+    $.get('/index.php/admin/update/download/', function (data) {
 
         if(data == "success"){
             progress(40,false);    

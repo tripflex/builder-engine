@@ -27,7 +27,7 @@ CREATE TABLE `be_alerts` (
   `icon` varchar(255) DEFAULT NULL,
   `tag` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_alerts
@@ -45,7 +45,7 @@ CREATE TABLE `be_block_relations` (
   PRIMARY KEY (`parent`,`child`,`version`),
   KEY `version_parent` (`parent`,`version`),
   KEY `version` (`version`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_block_relations
@@ -82,7 +82,7 @@ CREATE TABLE `be_cache` (
   `object` blob,
   `timeout` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_cache
@@ -96,7 +96,7 @@ CREATE TABLE `be_link_permissions` (
   `link_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`link_id`,`group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_link_permissions
@@ -181,7 +181,7 @@ CREATE TABLE `be_links` (
   `parent` int(11) DEFAULT '0',
   `order` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_links
@@ -207,11 +207,11 @@ INSERT INTO `be_links` VALUES ('14', 'Timeline', '/page-timeline.html', '', null
 DROP TABLE IF EXISTS `be_module_permissions`;
 CREATE TABLE `be_module_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `module` int(11) NOT NULL DEFAULT '0',
-  `group` int(11) DEFAULT NULL,
+  `module_id` int(11) NOT NULL DEFAULT '0',
+  `group_id` int(11) DEFAULT NULL,
   `access` enum('frontend','backend') DEFAULT 'frontend',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_module_permissions
@@ -222,6 +222,9 @@ INSERT INTO `be_module_permissions` VALUES ('3', '1', '1', 'backend');
 INSERT INTO `be_module_permissions` VALUES ('4', '2', '2', 'frontend');
 INSERT INTO `be_module_permissions` VALUES ('5', '2', '3', 'frontend');
 INSERT INTO `be_module_permissions` VALUES ('6', '2', '1', 'backend');
+INSERT INTO `be_module_permissions` VALUES ('7', '3', '2', 'frontend');
+INSERT INTO `be_module_permissions` VALUES ('8', '3', '3', 'frontend');
+INSERT INTO `be_module_permissions` VALUES ('9', '3', '1', 'backend');
 
 -- ----------------------------
 -- Table structure for be_modules
@@ -236,13 +239,14 @@ CREATE TABLE `be_modules` (
   `install_time` int(11) DEFAULT NULL,
   `active` enum('true','false') DEFAULT 'true',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_modules
 -- ----------------------------
 INSERT INTO `be_modules` VALUES ('1', 'Page', 'page', 'unknown', '0', '1394228161', 'true');
 INSERT INTO `be_modules` VALUES ('2', 'Blog', 'blog', 'unknown', '0', '1394228780', 'true');
+INSERT INTO `be_modules` VALUES ('3', 'BuilderPayment', 'builderpayment', '1.0', '0', '1394228780', 'true');
 
 -- ----------------------------
 -- Table structure for be_options
@@ -280,7 +284,7 @@ CREATE TABLE `be_page_versions` (
   KEY `path_active` (`path`,`active`),
   KEY `path_status` (`path`,`status`),
   KEY `path` (`path`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_page_versions
@@ -299,7 +303,7 @@ CREATE TABLE `be_pages` (
   `slug` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_pages
@@ -325,7 +329,7 @@ CREATE TABLE `be_post_comments` (
   `text` text,
   `time` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_post_comments
@@ -358,7 +362,7 @@ CREATE TABLE `be_user_group_link` (
   `user` int(11) NOT NULL,
   `group` int(11) NOT NULL,
   PRIMARY KEY (`user`,`group`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_user_group_link
@@ -373,7 +377,7 @@ CREATE TABLE `be_user_groups` (
   `name` varchar(60) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_user_groups
@@ -418,8 +422,156 @@ CREATE TABLE `be_visits` (
   `date` date DEFAULT NULL,
   `timestamp` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_visits
 -- ----------------------------
+
+-- Update 2.0.25 ---
+
+ALTER TABLE be_alerts CHANGE `user` `user_id` INT (11);
+
+CREATE TABLE `be_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `remote_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `version` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+-- Update 2.0.26 ---
+-- ----------------------------
+-- Table structure for be_builderpayment_addresses
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_addresses`;
+CREATE TABLE `be_builderpayment_addresses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(255) DEFAULT NULL,
+  `middle_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `address_line_1` varchar(255) DEFAULT NULL,
+  `address_line_2` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `zip` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_addresses
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_link_order_bill_addr
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_link_order_bill_addr`;
+CREATE TABLE `be_builderpayment_link_order_bill_addr` (
+  `id` int(11) NOT NULL,
+  `billingaddress_id` int(11) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_link_order_bill_addr
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_link_order_product
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_link_order_product`;
+CREATE TABLE `be_builderpayment_link_order_product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_link_order_product
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_link_order_ship_addr
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_link_order_ship_addr`;
+CREATE TABLE `be_builderpayment_link_order_ship_addr` (
+  `id` int(11) NOT NULL,
+  `shippingaddress_id` int(11) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_link_order_ship_addr
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_link_ship_user
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_link_ship_user`;
+CREATE TABLE `be_builderpayment_link_ship_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shippingaddress_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_link_ship_user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_order_products
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_order_products`;
+CREATE TABLE `be_builderpayment_order_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `quantity` varchar(255) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `custom_data` longblob,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_order_products
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for be_builderpayment_orders
+-- ----------------------------
+DROP TABLE IF EXISTS `be_builderpayment_orders`;
+CREATE TABLE `be_builderpayment_orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `module` varchar(255) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `custom_data` longblob,
+  `payment_method` varchar(255) DEFAULT NULL,
+  `currency` varchar(255) DEFAULT NULL,
+  `status` enum('pending','paid','canceled') DEFAULT 'pending',
+  `billingaddress_id` int(11) DEFAULT NULL,
+  `shippingaddress_id` int(11) DEFAULT NULL,
+  `callback` varchar(255) DEFAULT NULL,
+  `user_id` int(11) DEFAULT '0',
+  `gross` decimal(11,2) DEFAULT NULL,
+  `paid_gross` decimal(11,2) DEFAULT '0.00',
+  `shipped` enum('yes','no') DEFAULT 'no',
+  `time_created` int(11) DEFAULT '0',
+  `time_paid` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of be_builderpayment_orders
+-- ----------------------------
+
+-- Update 2.0.32 --
+ALTER TABLE be_posts ADD text TEXT(0) AFTER title;

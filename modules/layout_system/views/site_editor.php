@@ -72,7 +72,7 @@ function get_blocks()
 <script type="text/javascript" src="/themes/dashboard/js/plugins/tables/datatables/jquery.dataTables.min.js"></script><!-- Init plugins only for page -->
 <link href="/themes/dashboard/css/icons.css" rel="stylesheet" />
 <link rel="stylesheet" media="screen" type="text/css" href="/builderengine/public/js/editor/custom.css" />
-<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+<link href="/builderengine/public/css/googleapis/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
 <link href="http://vitalets.github.io/angular-xeditable/dist/css/xeditable.css" rel="stylesheet" />
 
 <link href="/builderengine/public/css/block-editor.css" rel="stylesheet" />
@@ -355,7 +355,7 @@ $(window).ready(function (){
 });
 </script>
 
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script src="/builderengine/public/js/googleapis/angularjs/1.0.8/angular.min.js"></script>
 <script type="text/javascript">
 var editor_mode = "";
 function initialize_publish_button()

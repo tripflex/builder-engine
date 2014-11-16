@@ -1,16 +1,4 @@
 <?php
-/***********************************************************
-* BuilderEngine v2.0.12
-* ---------------------------------
-* BuilderEngine CMS Platform - Radian Enterprise Systems Limited
-* Copyright Radian Enterprise Systems Limited 2012-2014. All Rights Reserved.
-*
-* http://www.builderengine.com
-* Email: info@builderengine.com
-* Time: 2014-23-04 | File version: 2.0.12
-*
-***********************************************************/
-
     class Users extends CI_Model {
  
         function get_current_user()
@@ -54,9 +42,8 @@
         {
             $groups = explode(",", $groups);
  
- 
             $this->db->delete('user_group_link', array('user' => $user));
- 
+
             foreach($groups as $group)
             {
                 $group_id = $this->get_group_id_by_name($group);
@@ -78,24 +65,24 @@
             if(count($result) != 0)
             {
                 return $result[0]->id;
-            }else
+            }else{
                 return -1;
+            }
         }
  
         function register_user($data, $admin = false){
             if($this->username_already_used($data['username']) || $this->email_already_used($data['email'])){
                 return 0;
             }
- 
+
             $insert = array(
                 'name'              => $data['name'],
                 'username'          => $data['username'],
                 'password'          => md5($data['password']),
                 'email'             => $data['email'],
-                //'level'             => $data['level'],
                 'date_registered'   => time()
             );
- 
+
             $this->db->insert('users', $insert);
             $user = $this->db->insert_id();
  
@@ -103,7 +90,7 @@
             $username = $user_data->username;
  
             $this->upload_avatar($username);
- 
+
             if($admin)
                 $data['groups'] = "Members, Administrators, Frontend Editor, Frontend Manager";
  
@@ -187,15 +174,12 @@
             if(!is_dir("files/avatars"))
                 mkdir("files/avatars");
  
- 
             $this->load->library('upload');
  
             $file = 'avatar';
             // Check if there was a file uploaded - there are other ways to
             // check this such as checking the 'error' for the file - if error
             // is 0, you are good to code
- 
- 
             // Specify configuration for File
             $config['file_name'] = $username.".jpg";
             $config['upload_path'] = 'files/avatars/';
@@ -207,7 +191,7 @@
  
             // Initialize config for File
             $this->upload->initialize($config);
- 
+            
             // Upload file
             if ($this->upload->do_upload($file))
             {
