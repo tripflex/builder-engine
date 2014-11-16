@@ -348,7 +348,7 @@ CREATE TABLE `be_posts` (
   `author` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `title_fulltext` (`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of be_posts
@@ -405,7 +405,7 @@ CREATE TABLE `be_users` (
   PRIMARY KEY (`id`),
   FULLTEXT KEY `user_search_fulltext` (`username`,`name`,`email`),
   FULLTEXT KEY `username_fulltext` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of be_users
