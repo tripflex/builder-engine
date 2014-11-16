@@ -430,7 +430,6 @@ CREATE TABLE `be_visits` (
 
 -- Update 2.0.25 ---
 
-
 ALTER TABLE be_alerts CHANGE `user` `user_id` INT (11);
 
 CREATE TABLE `be_products` (
